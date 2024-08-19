@@ -1,0 +1,4 @@
+rocket.c:6:6:rocket_init	1
+rocket.c:47:6:atmosphere_init	1
+rocket.c:57:6:fly_control	10
+rocket.c:81:6:delta_init	1

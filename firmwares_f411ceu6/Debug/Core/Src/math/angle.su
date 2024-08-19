@@ -1,0 +1,4 @@
+../Core/Src/math/angle.c:6:6:angle_init	16	static
+../Core/Src/math/angle.c:12:6:angle_velocity_init	24	static
+../Core/Src/math/angle.c:21:6:angle_calculate	40	static
+../Core/Src/math/angle.c:37:6:angle_velocity_calculate	16	static

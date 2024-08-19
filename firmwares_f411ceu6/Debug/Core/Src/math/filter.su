@@ -1,0 +1,3 @@
+../Core/Src/math/filter.c:11:7:average_filter	24	static
+../Core/Src/math/filter.c:17:6:initGMedian	16	static
+../Core/Src/math/filter.c:22:6:filtered	32	static

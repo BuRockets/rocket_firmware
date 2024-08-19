@@ -1,0 +1,8 @@
+../Core/Src/system/inertia.c:10:7:pow2	16	static
+../Core/Src/system/inertia.c:14:6:accelerate_init	24	static
+../Core/Src/system/inertia.c:26:6:gyro_init	24	static
+../Core/Src/system/inertia.c:34:7:acceleration_modulus	24	static
+../Core/Src/system/inertia.c:39:6:inertia_init	16	static
+../Core/Src/system/inertia.c:45:6:get_inertia_measurement	16	static
+../Core/Src/system/inertia.c:58:6:filtered_inertia_measurement	40	static
+../Core/Src/system/inertia.c:69:6:get_inertia_measurement_mod	24	static

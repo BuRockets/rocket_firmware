@@ -1,0 +1,8 @@
+inertia.c:10:7:pow2	1
+inertia.c:14:6:accelerate_init	3
+inertia.c:26:6:gyro_init	2
+inertia.c:34:7:acceleration_modulus	1
+inertia.c:39:6:inertia_init	1
+inertia.c:45:6:get_inertia_measurement	1
+inertia.c:58:6:filtered_inertia_measurement	2
+inertia.c:69:6:get_inertia_measurement_mod	1

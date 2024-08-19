@@ -1,0 +1,7 @@
+../Core/Inc/i2c_er.h:19:16:wait_for_gpio_state_timeout	32	static,ignoring_inline_asm
+../Core/Inc/i2c_er.h:37:13:I2C_ClearBusyFlagErratum	40	static,ignoring_inline_asm
+../Core/Src/MPU9250.c:11:6:MPU_init	32	static
+../Core/Src/MPU9250.c:71:6:MAGN_init	40	static
+../Core/Src/MPU9250.c:101:6:MPU_get_magn	48	static
+../Core/Src/MPU9250.c:127:6:MPU_get_accel	56	static
+../Core/Src/MPU9250.c:141:6:MPU_get_gyro	48	static

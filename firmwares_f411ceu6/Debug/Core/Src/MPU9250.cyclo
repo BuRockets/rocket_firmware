@@ -1,0 +1,7 @@
+i2c_er.h:19:16:wait_for_gpio_state_timeout	6
+i2c_er.h:37:13:I2C_ClearBusyFlagErratum	1
+MPU9250.c:11:6:MPU_init	1
+MPU9250.c:71:6:MAGN_init	1
+MPU9250.c:101:6:MPU_get_magn	5
+MPU9250.c:127:6:MPU_get_accel	2
+MPU9250.c:141:6:MPU_get_gyro	2

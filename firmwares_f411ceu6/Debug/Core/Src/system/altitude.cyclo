@@ -1,0 +1,3 @@
+altitude.c:9:6:altitude_init	5
+altitude.c:42:6:get_altitude_measurement	1
+altitude.c:48:6:filtered_altitude_measurement	1

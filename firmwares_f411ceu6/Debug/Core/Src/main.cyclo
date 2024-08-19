@@ -1,0 +1,7 @@
+main.c:96:6:start_blink_led	1
+main.c:103:7:tick_to_sec	1
+main.c:112:5:main	7
+main.c:257:6:SystemClock_Config	3
+main.c:295:6:HAL_GPIO_EXTI_Callback	2
+main.c:308:6:Error_Handler	1
+main.c:327:6:assert_failed	1
