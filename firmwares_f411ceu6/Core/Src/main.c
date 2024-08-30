@@ -67,7 +67,7 @@ struct PID pid;
 
 float Kp = 1;
 
-float Ki = 0;
+float Ki = 1;
 
 float Kd = 0;
 

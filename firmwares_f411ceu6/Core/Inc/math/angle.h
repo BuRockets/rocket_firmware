@@ -11,6 +11,10 @@ extern "C" {
 #include "system/inertia.h"
 #include "math/pid.h"
 
+
+struct Accelerate;
+struct Gyro;
+
 /*
 struct Angle {
 	float pitch;

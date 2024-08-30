@@ -1,4 +1,4 @@
 ../Core/Src/math/pid.c:4:6:PID_init	32	static
 ../Core/Src/math/pid.c:23:6:set_PID_coefficients	32	static
-../Core/Src/math/pid.c:47:6:get_PID_out	48	static
-../Core/Src/math/pid.c:72:6:set_pwm	16	static
+../Core/Src/math/pid.c:47:6:get_PID_out	88	static
+../Core/Src/math/pid.c:100:6:set_pwm	16	static

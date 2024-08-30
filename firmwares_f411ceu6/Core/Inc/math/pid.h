@@ -17,6 +17,10 @@ extern "C" {
 
 #define dimension_out 4
 
+#define MAX_ANGLE     90
+
+#define MIN_ANGLE     -90
+
 struct Angle;
 
 struct Angle_velocity;

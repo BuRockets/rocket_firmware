@@ -48,20 +48,48 @@ void get_PID_out(struct PID* pid, struct Angle* angle, struct Angle_velocity* an
 
 	int16_t protect_out[dimension_out] = {0,};
 
+	int16_t P[dimension_in] = {0,};
+
+	int16_t I[dimension_in] = {0,};
+
+	int16_t D[dimension_in] = {0,};
+
+	int16_t P_out[dimension_out] = {0,};
+
+	int16_t I_out[dimension_out] = {0,};
+
+	int16_t D_out[dimension_out] = {0,};
+
+	for(int i = 0;i < dimension_in; i++){
+		pid->prev_error[i] = pid->error[i];
+	}
+
 	for(int i = 0;i < dimension_in; i++){
 		pid->error[i] = set_data[i] - angle->angle[i];
 	}
 
+	for(int i = 0; i < dimension_in; i++){
+		P[i] = pid->error[i];
+		I[i] = I[i] + (pid->error[i] + pid->prev_error[i])/2;
+		D[i] = pid->error[i] - pid->prev_error[i];
+	}
+
 	for(int i = 0; i < dimension_out; i++){
 		for(int j = 0; j < dimension_in; j++){
-			protect_out[i] += pid->kp[i][j]*pid->error[j];
+			P_out[i] += pid->kp[i][j] * P[i];
+
+			I_out[i] += pid->ki[i][j] * I[i];
+
+			D_out[i] += pid->kd[i][j] * D[i];
 		}
 
-		if(protect_out[i] > 90){
-			pid->out[i] = 90;
+		protect_out[i] = P_out[i] + I_out[i] + D_out[i];
+
+		if(protect_out[i] > MAX_ANGLE){
+			pid->out[i] = MAX_ANGLE;
 		}
-		else if (protect_out[i] < -90){
-			pid->out[i] = -90;
+		else if (protect_out[i] < MIN_ANGLE){
+			pid->out[i] = MIN_ANGLE;
 		}
 		else {
 			pid->out[i] = protect_out[i];
