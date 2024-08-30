@@ -1,6 +1,6 @@
 ../Core/Src/main.c:96:6:start_blink_led	16	static
 ../Core/Src/main.c:103:7:tick_to_sec	16	static
-../Core/Src/main.c:112:5:main	32	static
+../Core/Src/main.c:112:5:main	40	static
 ../Core/Src/main.c:257:6:SystemClock_Config	88	static
 ../Core/Src/main.c:295:6:HAL_GPIO_EXTI_Callback	16	static
 ../Core/Src/main.c:308:6:Error_Handler	4	static,ignoring_inline_asm

@@ -11,7 +11,21 @@ extern "C" {
 #include "main.h"
 //#include "inertia.h"
 #include <stdbool.h>
+#include "math/angle.h"
 
+struct Angle {
+	float pitch;
+	float roll;
+	float yaw;
+	float angle[3];
+};
+
+struct Angle_velocity{
+	float d_pitch;
+	float d_roll;
+	float d_yaw;
+	float d_angle[3];
+};
 
 // не могу объявить структуры Accelerate и Gyro в файле inertia.h, возникает ошибка сборки
 struct Accelerate{
@@ -80,18 +94,24 @@ struct Rocket{
 
 	float time;									//время
 
-	struct Atmosphere_param atmosphere;			//параметры атмосферы снаружи ракеты
+	float accel_mod;							//модуль ускорения, копируется из структуры accelerate
 
-	struct Accelerate* accelerate;
+	struct Atmosphere_param* atmosphere;			//параметры атмосферы снаружи ракеты
 
-	struct Gyro* gyro;
+	struct Angle* angle;
+
+	struct Angle_velocity* angle_velocity;
+
+	//struct Accelerate* accelerate;
+
+	//struct Gyro* gyro;
 
 };
 
 
 
 
-void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* altitude, struct Atmosphere_param* atmosphere, struct Accelerate* accelerate, struct Gyro* gyro);
+void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* altitude, struct Atmosphere_param* atmosphere, struct Accelerate* accelerate, struct Angle* angle, struct Angle_velocity* angle_velocity);
 
 void atmosphere_init(struct Atmosphere_param *atmosphere);
 

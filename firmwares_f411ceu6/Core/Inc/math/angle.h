@@ -11,7 +11,7 @@ extern "C" {
 #include "system/inertia.h"
 #include "math/pid.h"
 
-
+/*
 struct Angle {
 	float pitch;
 	float roll;
@@ -25,7 +25,7 @@ struct Angle_velocity{
 	float d_yaw;
 	float d_angle[3];
 };
-
+*/
 void angle_init(struct Angle* angle);
 
 void angle_velocity_init(struct Angle_velocity* angle_velocity);

@@ -163,7 +163,7 @@ int main(void)
 
     atmosphere_init(&atmosphere);
 
-    rocket_init(&rocket, "1A", &altitude, &atmosphere, &accelerate, &gyro);
+    rocket_init(&rocket, "1A", &altitude, &atmosphere, &accelerate, &angle, &angle_velocity);
 
     if (CheckFlashData()) {
   	  ReadFromFlash(&rocket); // Чтение данных из Flash, если они корректны
@@ -205,13 +205,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  get_inertia_measurement(&rocket);
+	  get_inertia_measurement(&accelerate, &gyro);
 
-	  filtered_inertia_measurement(&rocket,gmedian_a,gmedian_g);
+	  filtered_inertia_measurement(&accelerate, &gyro,gmedian_a,gmedian_g);
 
-	  get_inertia_measurement_mod(&rocket);
+	  get_inertia_measurement_mod(&accelerate, &gyro);
 
-	  angle_calculate(&angle, rocket.accelerate);
+	  angle_calculate(&angle, &accelerate);
 
 	  angle_velocity_calculate(&angle_velocity, &gyro);
 

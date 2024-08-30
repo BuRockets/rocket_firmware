@@ -42,9 +42,9 @@ void inertia_init(struct Accelerate* accelerate, struct Gyro* gyro){
 	MPU_init();
 }
 
-void get_inertia_measurement(struct Rocket* rocket){
-	MPU_get_accel(rocket->accelerate->destination_a);
-	MPU_get_gyro(rocket->gyro->destination_g);
+void get_inertia_measurement(struct Accelerate* accelerate, struct Gyro* gyro){
+	MPU_get_accel(accelerate->destination_a);
+	MPU_get_gyro(gyro->destination_g);
 	//rocket->accelerate->destination_a_f[0] = average_filter(rocket->accelerate->destination_a[0],rocket->accelerate->destination_a_f[0], k_accel);
 	/*for(int i = 0; i < 3; i++){
 		rocket->accelerate->destination_a_f[i] = average_filter(rocket->accelerate->destination_a[i],rocket->accelerate->destination_a_f[i], k_accel);
@@ -55,18 +55,18 @@ void get_inertia_measurement(struct Rocket* rocket){
 	//rocket->accelerate->destination_a[i]
 }
 
-void filtered_inertia_measurement(struct Rocket* rocket, struct GMedian* gmedian_a, struct GMedian* gmedian_g){
+void filtered_inertia_measurement(struct Accelerate* accelerate, struct Gyro* gyro, struct GMedian* gmedian_a, struct GMedian* gmedian_g){
 
 	for(int i = 0; i < 3; i++){
-			gmedian_a[i].destination_f_m = filtered(&(gmedian_a[i]), rocket->accelerate->destination_a[i]);
-			rocket->accelerate->destination_a_f[i] = average_filter(gmedian_a[i].destination_f_m,rocket->accelerate->destination_a_f[i], k_accel);
+			gmedian_a[i].destination_f_m = filtered(&(gmedian_a[i]), accelerate->destination_a[i]);
+			accelerate->destination_a_f[i] = average_filter(gmedian_a[i].destination_f_m, accelerate->destination_a_f[i], k_accel);
 
-			gmedian_g[i].destination_f_m = filtered(&(gmedian_g[i]), rocket->gyro->destination_g[i]);
-			rocket->gyro->destination_g_f[i] = average_filter(gmedian_g[i].destination_f_m,rocket->gyro->destination_g_f[i], k_gyro);
+			gmedian_g[i].destination_f_m = filtered(&(gmedian_g[i]), gyro->destination_g[i]);
+			gyro->destination_g_f[i] = average_filter(gmedian_g[i].destination_f_m, gyro->destination_g_f[i], k_gyro);
 		}
 }
 
-void get_inertia_measurement_mod(struct Rocket* rocket){
-	rocket->accelerate->accel_mod = acceleration_modulus(rocket->accelerate->destination_a_f);
-	rocket->gyro->gyro_mod = acceleration_modulus(rocket->gyro->destination_g_f);
+void get_inertia_measurement_mod(struct Accelerate* accelerate, struct Gyro* gyro){
+	accelerate->accel_mod = acceleration_modulus(accelerate->destination_a_f);
+	gyro->gyro_mod = acceleration_modulus(gyro->destination_g_f);
 }

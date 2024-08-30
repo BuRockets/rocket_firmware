@@ -44,7 +44,7 @@ Core/Src/system/altitude.o: ../Core/Src/system/altitude.c \
  ../Core/Inc/system/inertia.h ../Core/Inc/math/pid.h \
  ../Core/Inc/math/angle.h ../Core/Inc/math/pid.h ../Core/Inc/callback.h \
  ../Core/Inc/usart.h ../Core/Inc/flash.h ../Core/Inc/tim.h \
- ../Core/Inc/bmp280.h ../Core/Inc/i2c.h
+ ../Core/Inc/math/angle.h ../Core/Inc/bmp280.h ../Core/Inc/i2c.h
 ../Core/Inc/system/altitude.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/../stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -104,5 +104,6 @@ Core/Src/system/altitude.o: ../Core/Src/system/altitude.c \
 ../Core/Inc/usart.h:
 ../Core/Inc/flash.h:
 ../Core/Inc/tim.h:
+../Core/Inc/math/angle.h:
 ../Core/Inc/bmp280.h:
 ../Core/Inc/i2c.h:

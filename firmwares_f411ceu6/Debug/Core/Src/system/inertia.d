@@ -36,14 +36,14 @@ Core/Src/system/inertia.o: ../Core/Src/system/inertia.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Core/Inc/main.h ../Core/Inc/system/inertia.h \
  ../Core/Inc/system/altitude.h ../Core/Inc/system/rocket.h \
- ../Core/Inc/bmp280.h ../Core/Inc/i2c.h ../Core/Inc/main.h \
- ../Core/Inc/usart.h ../Core/Inc/system/radio.h \
- ../Core/Inc/system/rescue.h ../Core/Inc/tim.h \
- ../Core/Inc/system/rocket.h ../Core/Inc/system/power.h ../Core/Inc/adc.h \
- ../Core/Inc/math/filter.h ../Core/Inc/math/angle.h \
- ../Core/Inc/math/pid.h ../Core/Inc/math/angle.h ../Core/Inc/math/pid.h \
- ../Core/Inc/callback.h ../Core/Inc/usart.h ../Core/Inc/flash.h \
- ../Core/Inc/tim.h ../Core/Inc/MPU9250.h ../Core/Inc/math/filter.h
+ ../Core/Inc/math/angle.h ../Core/Inc/math/pid.h ../Core/Inc/math/angle.h \
+ ../Core/Inc/tim.h ../Core/Inc/main.h ../Core/Inc/bmp280.h \
+ ../Core/Inc/i2c.h ../Core/Inc/usart.h ../Core/Inc/system/radio.h \
+ ../Core/Inc/system/rescue.h ../Core/Inc/system/rocket.h \
+ ../Core/Inc/system/power.h ../Core/Inc/adc.h ../Core/Inc/math/filter.h \
+ ../Core/Inc/math/angle.h ../Core/Inc/math/pid.h ../Core/Inc/callback.h \
+ ../Core/Inc/usart.h ../Core/Inc/flash.h ../Core/Inc/tim.h \
+ ../Core/Inc/MPU9250.h ../Core/Inc/math/filter.h
 ../Core/Inc/system/inertia.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/../stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -83,19 +83,20 @@ Core/Src/system/inertia.o: ../Core/Src/system/inertia.c \
 ../Core/Inc/system/inertia.h:
 ../Core/Inc/system/altitude.h:
 ../Core/Inc/system/rocket.h:
+../Core/Inc/math/angle.h:
+../Core/Inc/math/pid.h:
+../Core/Inc/math/angle.h:
+../Core/Inc/tim.h:
+../Core/Inc/main.h:
 ../Core/Inc/bmp280.h:
 ../Core/Inc/i2c.h:
-../Core/Inc/main.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/system/radio.h:
 ../Core/Inc/system/rescue.h:
-../Core/Inc/tim.h:
 ../Core/Inc/system/rocket.h:
 ../Core/Inc/system/power.h:
 ../Core/Inc/adc.h:
 ../Core/Inc/math/filter.h:
-../Core/Inc/math/angle.h:
-../Core/Inc/math/pid.h:
 ../Core/Inc/math/angle.h:
 ../Core/Inc/math/pid.h:
 ../Core/Inc/callback.h:

@@ -32,7 +32,7 @@ void altitude_init(struct Rocket* rocket){
 	size = sprintf((char *)Data, "BMP280: found %s\n", bme280p ? "BME280" : "BMP280");
 	HAL_UART_Transmit(&huart1, Data, size, 1000);
 	for(int i = 0; i < 100; i++){
-		bmp280_read_float(&bmp280, &(rocket->atmosphere.start_temperature), &(rocket->atmosphere.start_pressure), &(rocket->atmosphere.start_humidity));
+		bmp280_read_float(&bmp280, &(rocket->atmosphere->start_temperature), &(rocket->atmosphere->start_pressure), &(rocket->atmosphere->start_humidity));
 	}
 
 }
@@ -40,8 +40,8 @@ void altitude_init(struct Rocket* rocket){
 
 
 void get_altitude_measurement(struct Rocket* rocket){
-	  bmp280_read_float(&bmp280, &(rocket->atmosphere.temperature), &(rocket->atmosphere.pressure), &(rocket->atmosphere.humidity));
-	  rocket->altitude->altitude = pascal_to_metrs(rocket->atmosphere.pressure,rocket->atmosphere.start_pressure);
+	  bmp280_read_float(&bmp280, &(rocket->atmosphere->temperature), &(rocket->atmosphere->pressure), &(rocket->atmosphere->humidity));
+	  rocket->altitude->altitude = pascal_to_metrs(rocket->atmosphere->pressure,rocket->atmosphere->start_pressure);
 	  //rocket->altitude->altitude_f = average_filter(rocket->altitude->altitude, rocket->altitude->altitude_f, k_alt);
 }
 

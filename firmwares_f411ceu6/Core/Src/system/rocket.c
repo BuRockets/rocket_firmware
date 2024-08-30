@@ -3,7 +3,7 @@
 #include "system/rocket.h"
 #include "MPU9250.h"
 
-void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* altitude, struct Atmosphere_param* atmosphere, struct Accelerate* accelerate, struct Gyro* gyro) {
+void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* altitude, struct Atmosphere_param* atmosphere,struct Accelerate* accelerate, struct Angle* angle, struct Angle_velocity* angle_velocity) {
 
 	strncpy(rocket->teamId, teamId, sizeof(rocket->teamId) - 1);
 	rocket->teamId[sizeof(rocket->teamId) - 1] = '\0'; // Обеспечиваем нуль-терминатор
@@ -23,9 +23,15 @@ void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* alt
 
     rocket->gyro = 0;*/
 
-	rocket->accelerate = accelerate;
+	//rocket->accelerate = accelerate;
 
-	rocket->gyro = gyro;
+	//rocket->gyro = gyro;
+
+	rocket->angle = angle;
+
+	rocket->angle_velocity = angle_velocity;
+
+	rocket->accel_mod = accelerate->accel_mod;
 
     rocket->start_point = 0;
     rocket->apogee_point = 0;
@@ -40,7 +46,7 @@ void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* alt
 
     rocket->time = HAL_GetTick();
 
-    rocket->atmosphere = *atmosphere;
+    rocket->atmosphere = atmosphere;
 
 }
 

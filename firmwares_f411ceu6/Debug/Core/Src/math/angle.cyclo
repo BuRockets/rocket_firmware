@@ -1,4 +1,4 @@
 angle.c:6:6:angle_init	1
 angle.c:12:6:angle_velocity_init	2
 angle.c:21:6:angle_calculate	1
-angle.c:37:6:angle_velocity_calculate	1
+angle.c:37:6:angle_velocity_calculate	2

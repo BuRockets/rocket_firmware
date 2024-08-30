@@ -47,11 +47,11 @@ float acceleration_modulus(float destination_a[3]);
 
 void inertia_init(struct Accelerate* accelerate, struct Gyro* gyro);
 
-void get_inertia_measurement(struct Rocket* rocket);
+void get_inertia_measurement(struct Accelerate* accelerate, struct Gyro* gyro);
 
-void get_inertia_measurement_mod(struct Rocket* rocket);
+void get_inertia_measurement_mod(struct Accelerate* accelerate, struct Gyro* gyro);
 
-void filtered_inertia_measurement(struct Rocket* rocket, struct GMedian* gmedian_a, struct GMedian* gmedian_g);
+void filtered_inertia_measurement(struct Accelerate* accelerate, struct Gyro* gyro, struct GMedian* gmedian_a, struct GMedian* gmedian_g);
 
 
 #ifdef __cplusplus
