@@ -13,6 +13,15 @@ extern "C" {
 struct Radio{
 
 	bool TRANSMIT_IS_OK;
+	bool ALTITUDE_IS_OK;
+	bool PITCH_IS_OK;
+	bool ROLL_IS_OK;
+	bool YAW_IS_OK;
+	bool D_PITCH_IS_OK;
+	bool D_ROLL_IS_OK;
+	bool D_YAW_IS_OK;
+	bool TEMPERATURE_IS_OK;
+
 	uint16_t frequency_data_transmission;
 };
 

@@ -66,7 +66,24 @@ void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio){
 			else if (strcmp(var_name, "frequency_data_transmission") == 0) {
 				radio->frequency_data_transmission = value;
 				//set_data_transmit_frequency(&htim2, radio); //потребуется при включении TIM2 для отправки телеметрии
+			} else if (strcmp(var_name, "ALTITUDE_IS_OK") == 0) {
+				radio->ALTITUDE_IS_OK = value;
+			} else if (strcmp(var_name, "PITCH_IS_OK") == 0) {
+				radio->PITCH_IS_OK = value;
+			} else if (strcmp(var_name, "ROLL_IS_OK") == 0) {
+				radio->ROLL_IS_OK = value;
+			} else if (strcmp(var_name, "YAW_IS_OK") == 0) {
+				radio->YAW_IS_OK = value;
+			} else if (strcmp(var_name, "D_PITCH_IS_OK") == 0) {
+				radio->D_PITCH_IS_OK = value;
+			} else if (strcmp(var_name, "D_ROLL_IS_OK") == 0) {
+				radio->D_ROLL_IS_OK = value;
+			} else if (strcmp(var_name, "D_YAW_IS_OK") == 0) {
+				radio->D_YAW_IS_OK = value;
+			} else if (strcmp(var_name, "TEMPERATURE_IS_OK") == 0) {
+				radio->TEMPERATURE_IS_OK = value;
 			}
+
 		} else {
 			char *command = strtok(rx_buffer, ";");
 			if (strcmp(command, "get_delta_apogee") == 0){

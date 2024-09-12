@@ -234,7 +234,7 @@ int main(void)
 
 	  if(PID_WORK == true){
 		  get_PID_out(&pid, &angle, &angle_velocity, set_data);
-		  set_pwm(&pid);
+		  //set_pwm(&pid);			//Раскоментировать при стабильном уровне питания 5Вольт
 		  PID_WORK = false;
 	  }
 
