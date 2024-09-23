@@ -36,11 +36,12 @@ void angle_calculate(struct Angle* angle, struct Accelerate* accelerate){
 
 void angle_velocity_calculate(struct Angle_velocity* angle_velocity, struct Gyro* gyro){
 
-	angle_velocity->d_pitch = gyro->destination_g_f[0];
-	angle_velocity->d_roll = gyro->destination_g_f[1];
+	angle_velocity->d_pitch = gyro->destination_g_f[1];
+	angle_velocity->d_roll = gyro->destination_g_f[0];
 	angle_velocity->d_yaw = gyro->destination_g_f[2];
 
-	for(int i = 0; i < 3; i++){
-		angle_velocity->d_angle[i] = gyro->destination_g_f[i];
-	}
+	angle_velocity->d_angle[0] = gyro->destination_g_f[1];
+	angle_velocity->d_angle[1] = gyro->destination_g_f[0];
+	angle_velocity->d_angle[2] = gyro->destination_g_f[2];
+
 }
