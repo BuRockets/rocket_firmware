@@ -1,5 +1,5 @@
 callback.c:8:9:stringToUint8	4
 callback.c:31:10:Hz_to_ms	1
-callback.c:36:6:receive_data	19
-callback.c:108:6:HAL_UARTEx_RxEventCallback	1
-callback.c:116:6:HAL_TIM_PeriodElapsedCallback	2
+callback.c:36:6:receive_data	20
+callback.c:110:6:HAL_UARTEx_RxEventCallback	1
+callback.c:118:6:HAL_TIM_PeriodElapsedCallback	2

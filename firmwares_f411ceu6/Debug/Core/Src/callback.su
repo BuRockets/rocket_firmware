@@ -1,5 +1,5 @@
 ../Core/Src/callback.c:8:9:stringToUint8	24	static
 ../Core/Src/callback.c:31:10:Hz_to_ms	24	static
 ../Core/Src/callback.c:36:6:receive_data	232	static
-../Core/Src/callback.c:108:6:HAL_UARTEx_RxEventCallback	16	static
-../Core/Src/callback.c:116:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/callback.c:110:6:HAL_UARTEx_RxEventCallback	16	static
+../Core/Src/callback.c:118:6:HAL_TIM_PeriodElapsedCallback	16	static

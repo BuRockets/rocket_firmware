@@ -11,6 +11,7 @@ void radio_init(struct Radio* radio){
 	radio->D_ROLL_IS_OK = false;
 	radio->D_YAW_IS_OK = false;
 	radio->TEMPERATURE_IS_OK = false;
+	radio->BATTERY_VOLTAGE_IS_OK = false;
 	radio->frequency_data_transmission = 1;
 }
 
@@ -35,6 +36,7 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 	char d_roll_buf[50];
 	char d_yaw_buf[50];
 	char temperature_buf[50];
+	char battery_voltage_buf[50];
 
 
 	if(radio->TRANSMIT_IS_OK == true){
@@ -74,6 +76,10 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 		if(radio->TEMPERATURE_IS_OK == true){
 			snprintf(temperature_buf, sizeof(temperature_buf), "temperature:%f ", rocket->atmosphere->temperature);
 			HAL_UART_Transmit(&huart1, (uint8_t*)temperature_buf, strlen(temperature_buf), 100);
+		}
+		if(radio->BATTERY_VOLTAGE_IS_OK == true){
+			snprintf(battery_voltage_buf, sizeof(battery_voltage_buf), "battery_voltage:%f ", rocket->battery_voltage);
+			HAL_UART_Transmit(&huart1, (uint8_t*)battery_voltage_buf, strlen(battery_voltage_buf), 100);
 		}
 		HAL_UART_Transmit(&huart1, (uint8_t*)";\n", strlen(";\n"), 100);
 	}
