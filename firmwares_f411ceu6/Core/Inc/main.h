@@ -93,6 +93,8 @@ extern bool PID_WORK;
 #define btn_Pin GPIO_PIN_14
 #define btn_GPIO_Port GPIOC
 #define btn_EXTI_IRQn EXTI15_10_IRQn
+#define SD_CS_Pin GPIO_PIN_0
+#define SD_CS_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
