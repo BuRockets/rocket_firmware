@@ -28,7 +28,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "lora.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -39,6 +39,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define btn_time 200
+//#define no_debug_without_GY_9250			//раскоментировать при подключенном модуле GY_9250
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -165,7 +166,7 @@ int main(void)
 
     HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_SET);
 
-    atmosphere_init(&atmosphere);
+    //atmosphere_init(&atmosphere);
 
     rocket_init(&rocket, "1A", &altitude, &atmosphere, &accelerate, &angle, &angle_velocity);
 
@@ -184,7 +185,7 @@ int main(void)
 
     set_PID_coefficients(&pid, Kp, Ki, Kd);
 
-    altitude_init(&rocket);
+    //altitude_init(&rocket);
 
     rescue_system_init(TIM1);
 
@@ -199,6 +200,8 @@ int main(void)
 
     HAL_TIM_Base_Start_IT(&htim3);
 
+    LoRa_Init();  // Инициализация LoRa в Normal Mode
+
     HAL_Delay(500);
     HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_RESET);
     HAL_Delay(200);
@@ -209,21 +212,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  get_inertia_measurement(&accelerate, &gyro);
-
+    #ifndef no_debug_without_GY_9250
+	  /*get_inertia_measurement(&accelerate, &gyro);
 	  filtered_inertia_measurement(&accelerate, &gyro,gmedian_a,gmedian_g);
-
 	  get_inertia_measurement_mod(&accelerate, &gyro);
-
 	  angle_calculate(&angle, &accelerate);
-
 	  angle_velocity_calculate(&angle_velocity, &gyro);
-
 	  get_altitude_measurement(&rocket);
+	  filtered_altitude_measurement(&rocket, &gmedian_alt);*/
+    #endif
 
-	  filtered_altitude_measurement(&rocket, &gmedian_alt);
-
-	  if(flag_irq && (HAL_GetTick() - time_irq) > btn_time)
+	  /*if(flag_irq && (HAL_GetTick() - time_irq) > btn_time)
 		  {
 		  turn_servo(90);
 		  }
@@ -232,21 +231,22 @@ int main(void)
 
 	  if(rocket.activate_point){
 		 //turn_servo(90);
-	  }
+	  }*/
 	  rocket.time = tick_to_sec(HAL_GetTick());
 	  rocket.battery_voltage = get_mcu_voltage();
 
-	  if(PID_WORK == true){
+	  /*if(PID_WORK == true){
 		  get_PID_out(&pid, &angle, &angle_velocity, set_data);
 		  //set_pwm(&pid);			//Раскоментировать при стабильном уровне питания 5Вольт
 		  PID_WORK = false;
-	  }
+	  }*/
 
 	  if(HAL_GetTick() - time > Hz_to_ms(radio.frequency_data_transmission)){
 		  time = HAL_GetTick();
 
 		  transmit_data(&rocket, &radio);
 	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -1,5 +1,5 @@
 #include "system/radio.h"
-
+#include "lora.h"
 
 void radio_init(struct Radio* radio){
 	radio->TRANSMIT_IS_OK = false;
@@ -41,7 +41,10 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 
 	if(radio->TRANSMIT_IS_OK == true){
 		snprintf(time_buf, sizeof(time_buf), "time:%f ", rocket->time);
+		//LoRa_SendData((uint8_t*)time_buf, strlen(time_buf));  // Отправляем без нуль-терминатора
+		LoRa_WaitAUX();
 		HAL_UART_Transmit(&huart1, (uint8_t*)time_buf, strlen(time_buf), 100);
+		LoRa_WaitAUX();
 
 		if(radio->ALTITUDE_IS_OK == true){
 			snprintf(altitude_buf, sizeof(altitude_buf), "altitude:%f ", rocket->altitude->altitude_f);
@@ -79,7 +82,9 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 		}
 		if(radio->BATTERY_VOLTAGE_IS_OK == true){
 			snprintf(battery_voltage_buf, sizeof(battery_voltage_buf), "battery_voltage:%f ", rocket->battery_voltage);
+			LoRa_WaitAUX();
 			HAL_UART_Transmit(&huart1, (uint8_t*)battery_voltage_buf, strlen(battery_voltage_buf), 100);
+			LoRa_WaitAUX();
 		}
 		HAL_UART_Transmit(&huart1, (uint8_t*)";\n", strlen(";\n"), 100);
 	}

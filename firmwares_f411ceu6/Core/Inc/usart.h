@@ -27,7 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <stdarg.h> //for va_list var arg functions
+
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
