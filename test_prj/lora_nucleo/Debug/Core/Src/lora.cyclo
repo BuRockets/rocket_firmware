@@ -1,0 +1,15 @@
+lora.c:8:6:Lora_Init	4
+lora.c:44:9:MyStsrStsr	4
+lora.c:56:6:Lora_RxBuf_Bytes	4
+lora.c:68:6:Lora_Message_TX	8
+lora.c:99:6:Lora_Message_RX	1
+lora.c:103:6:Lora_Get_Message_RX	3
+lora.c:115:6:Lora_Reset	2
+lora.c:130:6:Lora_TX_ReadyStatus	2
+lora.c:135:6:Lora_RxBuf_String	2
+lora.c:144:10:Lora_RxNbrBytes	1
+lora.c:148:6:Lora_Flush_Buf	2
+lora.c:154:10:Lora_SetMode	9
+lora.c:189:10:Lora_GetMode	9
+lora.c:199:6:Lora_GetVersion	2
+lora.c:213:6:Lora_GetOptions	2
