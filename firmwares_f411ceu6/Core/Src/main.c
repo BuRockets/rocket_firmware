@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "fatfs.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -26,7 +27,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "lora.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -83,6 +84,10 @@ uint32_t time = 0;
 bool PID_WORK = 0;
 
 static float set_data[dimension_in] = {0,};
+
+uint8_t lora_rx_buffer[256];  // Буфер для приёма
+uint16_t lora_rx_size = 0;    // Размер принятых данных
+uint8_t lora_rx_ready = 0;    // Флаг готовности данных
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -144,8 +149,10 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM3_Init();
   MX_TIM2_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)&rx_buffer, 100);
+	HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)lora_rx_buffer, 100);
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 
     //HAL_ADCEx_Calibration_Start(&hadc1);
 
@@ -180,7 +187,7 @@ int main(void)
 
     set_PID_coefficients(&pid, Kp, Ki, Kd);
 
-    altitude_init(&rocket);
+    //altitude_init(&rocket);
 
     rescue_system_init(TIM1);
 
@@ -194,6 +201,7 @@ int main(void)
     radio_init(&radio);
 
     HAL_TIM_Base_Start_IT(&htim3);
+    LoRa_Init();
 
     HAL_Delay(500);
     HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_RESET);
@@ -205,7 +213,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  get_inertia_measurement(&accelerate, &gyro);
+	  /*get_inertia_measurement(&accelerate, &gyro);
 
 	  filtered_inertia_measurement(&accelerate, &gyro,gmedian_a,gmedian_g);
 
@@ -237,12 +245,18 @@ int main(void)
 		  //set_pwm(&pid);			//Раскоментировать при стабильном уровне питания 5Вольт
 		  PID_WORK = false;
 	  }
-
+*/
+	  __disable_irq();
+	  rocket.time = tick_to_sec(HAL_GetTick());
+	  rocket.battery_voltage = get_mcu_voltage();
+	  __enable_irq();
 	  if(HAL_GetTick() - time > Hz_to_ms(radio.frequency_data_transmission)){
 		  time = HAL_GetTick();
-
-		  transmit_data(&rocket, &radio);
+		  //if(LoRa_is_Ready())
+			  //transmit_data(&rocket, &radio);
 	  }
+
+	  Process_LoRa_Data();  // Неблокирующая обработка
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

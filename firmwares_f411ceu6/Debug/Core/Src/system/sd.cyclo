@@ -1,0 +1,4 @@
+sd.c:15:5:SD_init	3
+sd.c:47:5:SD_read	3
+sd.c:77:5:SD_write	3
+sd.c:104:5:mount_SD_driver	2

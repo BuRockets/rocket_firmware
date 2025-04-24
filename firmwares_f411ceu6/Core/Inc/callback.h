@@ -14,8 +14,9 @@ extern "C" {
 #include "system/radio.h"
 #include "tim.h"
 
-
 uint16_t Hz_to_ms(uint16_t frequency);
+
+void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio);
 
 #ifdef __cplusplus
 }

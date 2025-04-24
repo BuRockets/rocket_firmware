@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-
+#include "lora.h"
 
 uint8_t stringToUint8(const char *str) {
 	char *endptr;
@@ -109,10 +109,15 @@ void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio){
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 
-	receive_data(rx_buffer, &rocket, &radio);
+	/*receive_data(rx_buffer, &rocket, &radio);
 	// Запускаем прием следующего байта
 	HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)&rx_buffer, 100);
+*/
 
+	if (huart->Instance == USART1) {
+	        lora_rx_size = Size;
+	        lora_rx_ready = 1;  // Устанавливаем флаг готовности
+	}
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){

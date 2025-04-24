@@ -1,0 +1,4 @@
+../Core/Src/system/sd.c:15:5:SD_init	32	static
+../Core/Src/system/sd.c:47:5:SD_read	24	static
+../Core/Src/system/sd.c:77:5:SD_write	24	static
+../Core/Src/system/sd.c:104:5:mount_SD_driver	16	static

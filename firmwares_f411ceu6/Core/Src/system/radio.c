@@ -38,6 +38,27 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 	char temperature_buf[50];
 	char battery_voltage_buf[50];
 
+	/*
+
+
+    if (!LoRa_is_Ready()) return;  // Выходим, если модуль занят
+    if(radio->TRANSMIT_IS_OK == true){
+
+		char tx_buffer[256];
+		int offset = snprintf(tx_buffer, sizeof(tx_buffer), "time:%f ", rocket->time);
+
+		if (radio->ALTITUDE_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "altitude:%f ", rocket->altitude->altitude_f);
+
+		if (radio->PITCH_IS_OK)
+					offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "pitch:%f ", rocket->angle->pitch);
+
+		offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, ";\n");
+		HAL_UART_Transmit(&huart1, (uint8_t*)tx_buffer, offset, 100);
+		HAL_Delay(100);  // Пауза после отправки
+    }
+
+*/
 
 	if(radio->TRANSMIT_IS_OK == true){
 		snprintf(time_buf, sizeof(time_buf), "time:%f ", rocket->time);

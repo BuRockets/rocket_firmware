@@ -1,0 +1,6 @@
+../Core/Src/lora.c:9:6:LoRa_SetMode	16	static
+../Core/Src/lora.c:14:6:LoRa_WaitAUX	8	static
+../Core/Src/lora.c:20:6:LoRa_Init	8	static
+../Core/Src/lora.c:25:6:LoRa_SendData	16	static
+../Core/Src/lora.c:35:9:LoRa_is_Ready	8	static
+../Core/Src/lora.c:39:6:Process_LoRa_Data	8	static

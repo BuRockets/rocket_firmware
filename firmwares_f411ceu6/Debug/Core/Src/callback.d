@@ -43,7 +43,7 @@ Core/Src/callback.o: ../Core/Src/callback.c ../Core/Inc/callback.h \
  ../Core/Inc/system/rocket.h ../Core/Inc/system/power.h ../Core/Inc/adc.h \
  ../Core/Inc/math/filter.h ../Core/Inc/math/angle.h \
  ../Core/Inc/math/pid.h ../Core/Inc/callback.h ../Core/Inc/flash.h \
- ../Core/Inc/tim.h
+ ../Core/Inc/tim.h ../Core/Inc/lora.h
 ../Core/Inc/callback.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/../stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -106,3 +106,4 @@ Core/Src/callback.o: ../Core/Src/callback.c ../Core/Inc/callback.h \
 ../Core/Inc/callback.h:
 ../Core/Inc/flash.h:
 ../Core/Inc/tim.h:
+../Core/Inc/lora.h:
