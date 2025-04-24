@@ -27,6 +27,7 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 	if(radio->TRANSMIT_IS_OK == true){
 		HAL_UART_Transmit(&huart1, (uint8_t*)buf, strlen(buf), 100);
 	}*/
+	/*
 	char time_buf[50];
 	char altitude_buf[50];
 	char pitch_buf[50];
@@ -37,8 +38,8 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 	char d_yaw_buf[50];
 	char temperature_buf[50];
 	char battery_voltage_buf[50];
+*/
 
-	/*
 
 
     if (!LoRa_is_Ready()) return;  // Выходим, если модуль занят
@@ -53,14 +54,20 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 		if (radio->PITCH_IS_OK)
 					offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "pitch:%f ", rocket->angle->pitch);
 
+		if (radio->BATTERY_VOLTAGE_IS_OK)
+							offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "battery_voltage:%f ", rocket->battery_voltage);
+
+		if (radio->TEMPERATURE_IS_OK)
+									offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "temperature:%f ", rocket->atmosphere->temperature);
+
 		offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, ";\n");
 		HAL_UART_Transmit(&huart1, (uint8_t*)tx_buffer, offset, 100);
 		HAL_Delay(100);  // Пауза после отправки
     }
 
-*/
 
-	if(radio->TRANSMIT_IS_OK == true){
+
+	/*if(radio->TRANSMIT_IS_OK == true){
 		snprintf(time_buf, sizeof(time_buf), "time:%f ", rocket->time);
 		HAL_UART_Transmit(&huart1, (uint8_t*)time_buf, strlen(time_buf), 100);
 
@@ -103,5 +110,5 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 			HAL_UART_Transmit(&huart1, (uint8_t*)battery_voltage_buf, strlen(battery_voltage_buf), 100);
 		}
 		HAL_UART_Transmit(&huart1, (uint8_t*)";\n", strlen(";\n"), 100);
-	}
+	}*/
 }

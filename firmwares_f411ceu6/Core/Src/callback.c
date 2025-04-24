@@ -115,7 +115,6 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 */
 
 	if (huart->Instance == USART1) {
-	        lora_rx_size = Size;
 	        lora_rx_ready = 1;  // Устанавливаем флаг готовности
 	}
 }

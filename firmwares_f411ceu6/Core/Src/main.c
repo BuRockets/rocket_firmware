@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
-#include "fatfs.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -85,8 +84,7 @@ bool PID_WORK = 0;
 
 static float set_data[dimension_in] = {0,};
 
-uint8_t lora_rx_buffer[256];  // Буфер для приёма
-uint16_t lora_rx_size = 0;    // Размер принятых данных
+
 uint8_t lora_rx_ready = 0;    // Флаг готовности данных
 /* USER CODE END PV */
 
@@ -149,9 +147,8 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM3_Init();
   MX_TIM2_Init();
-  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-	HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)lora_rx_buffer, 100);
+	HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)&rx_buffer, 100);
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 
     //HAL_ADCEx_Calibration_Start(&hadc1);
@@ -252,8 +249,8 @@ int main(void)
 	  __enable_irq();
 	  if(HAL_GetTick() - time > Hz_to_ms(radio.frequency_data_transmission)){
 		  time = HAL_GetTick();
-		  //if(LoRa_is_Ready())
-			  //transmit_data(&rocket, &radio);
+		  if(LoRa_is_Ready())
+			  transmit_data(&rocket, &radio);
 	  }
 
 	  Process_LoRa_Data();  // Неблокирующая обработка

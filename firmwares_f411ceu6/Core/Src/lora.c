@@ -38,12 +38,12 @@ uint8_t LoRa_is_Ready() {
 
 void Process_LoRa_Data(void) {
     if (lora_rx_ready && LoRa_is_Ready()) {
-        receive_data((char*)lora_rx_buffer, &rocket, &radio);
+        receive_data(rx_buffer, &rocket, &radio);
         lora_rx_ready = 0;  // Сбрасываем флаг
     }
         // Перезапускаем приём (если модуль готов)
         if (LoRa_is_Ready()) {
-            HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t*)lora_rx_buffer, sizeof(lora_rx_buffer));
+            HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)&rx_buffer, 100);
         }
 
 }
