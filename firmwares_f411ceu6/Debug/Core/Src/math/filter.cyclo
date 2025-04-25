@@ -1,3 +1,0 @@
-filter.c:11:7:average_filter	1
-filter.c:17:6:initGMedian	1
-filter.c:22:6:filtered	10

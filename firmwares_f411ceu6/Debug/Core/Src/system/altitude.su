@@ -1,3 +1,0 @@
-../Core/Src/system/altitude.c:9:6:altitude_init	24	static
-../Core/Src/system/altitude.c:42:6:get_altitude_measurement	24	static
-../Core/Src/system/altitude.c:48:6:filtered_altitude_measurement	24	static
