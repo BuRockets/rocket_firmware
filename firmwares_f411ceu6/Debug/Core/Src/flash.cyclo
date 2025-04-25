@@ -1,3 +1,0 @@
-flash.c:5:5:CheckFlashData	1
-flash.c:24:19:WriteToFlash	6
-flash.c:90:6:ReadFromFlash	2
