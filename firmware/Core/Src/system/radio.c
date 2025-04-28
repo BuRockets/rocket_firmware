@@ -13,6 +13,7 @@ void radio_init(struct Radio* radio){
 	radio->TEMPERATURE_IS_OK = false;
 	radio->BATTERY_VOLTAGE_IS_OK = false;
 	radio->frequency_data_transmission = 1;
+	radio->CONTROL_IS_OK = 0;
 }
 
 void set_data_transmit_frequency(TIM_HandleTypeDef *htim, struct Radio* radio){

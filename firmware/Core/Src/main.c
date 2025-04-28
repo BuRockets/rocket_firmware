@@ -244,22 +244,23 @@ int main(void)
 
 	  filtered_altitude_measurement(&rocket, &gmedian_alt);
 
-	  if(flag_irq && (HAL_GetTick() - time_irq) > btn_time)
-		  {
+	  if((flag_irq && (HAL_GetTick() - time_irq) > btn_time)){
 		  turn_servo(90);
-		  }
+	  }
 
 	  fly_control(&rocket);
 
 	  if(rocket.activate_point){
-		 //turn_servo(90);
+		 turn_servo(90);
 	  }
 	  rocket.time = tick_to_sec(HAL_GetTick());
 	  rocket.battery_voltage = get_mcu_voltage();
 
 	  if(PID_WORK == true){
 		  get_PID_out(&pid, &angle, &angle_velocity, set_data);
-		  //set_pwm(&pid);			//Раскоментировать при стабильном уровне питания 5Вольт
+		  if(radio.CONTROL_IS_OK == true){
+			  set_pwm(&pid);			//Раскоментировать при стабильном уровне питания 5Вольт
+		  }
 		  PID_WORK = false;
 	  }
 

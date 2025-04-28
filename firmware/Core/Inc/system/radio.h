@@ -22,6 +22,8 @@ struct Radio{
 	bool D_YAW_IS_OK;
 	bool TEMPERATURE_IS_OK;
 	bool BATTERY_VOLTAGE_IS_OK;
+	bool CONTROL_IS_OK;
+
 
 	uint16_t frequency_data_transmission;
 };

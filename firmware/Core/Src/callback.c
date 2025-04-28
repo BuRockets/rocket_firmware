@@ -84,6 +84,8 @@ void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio){
 				radio->TEMPERATURE_IS_OK = value;
 			} else if (strcmp(var_name, "BATTERY_VOLTAGE_IS_OK") == 0) {
 				radio->BATTERY_VOLTAGE_IS_OK = value;
+			} else if (strcmp(var_name, "CONTROL_IS_OK") == 0) {
+				radio->CONTROL_IS_OK = value;
 			}
 
 		} else {
