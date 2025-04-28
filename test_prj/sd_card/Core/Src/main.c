@@ -55,7 +55,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void myprintf(const char *fmt, ...);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -77,6 +77,7 @@ FIL fil; 		//File handle
 FRESULT fres; //Result after operations
 BYTE readBuf[30];
 BYTE writeBuf[30];
+UINT bytesWrote;
 /* USER CODE END 0 */
 
 /**
@@ -115,10 +116,11 @@ int main(void)
 
 
 
-    //SD_init(FatFs,fil,fres,readBuf);
+    SD_init();
 
     //Open the file system
-    fres = f_mount(&FatFs, "", 1); //1=mount now
+  //f_mount(&USERFatFS, USERPath, 0)
+    /*fres = f_mount(&FatFs, "", 1); //1=mount now
   	while(fres != FR_OK){
         f_sync(&fil);
         f_close(&fil);
@@ -129,7 +131,7 @@ int main(void)
     }
 
     //Now let's try and write a file "write.txt"
-    fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_CREATE_ALWAYS);
+    fres = f_open(&fil, "write.txt", FA_WRITE | FA_CREATE_ALWAYS);
     if(fres == FR_OK) {
   	myprintf("I was able to open 'write.txt' for writing\r\n");
     } else {
@@ -146,7 +148,7 @@ int main(void)
 
     //Be a tidy kiwi - don't forget to close your file!
     f_close(&fil);
-
+*/
 
   /* USER CODE END 2 */
 
@@ -154,35 +156,31 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  for (; i < 15; i++) {
-		  //snprintf((char*)writeBuf, sizeof(writeBuf), "File number %d is made!\r\n", i);
-		  //SD_write(fil, fres, (char*)writeBuf);
+	  for (; i < 18; i++) {
+		  snprintf((char*)writeBuf, sizeof(writeBuf), "File number %d is made!\r\n", i);
+		  SD_write();
 
-	          // Открываем файл для дописывания
-	          fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_APPEND);
-	          if (fres != FR_OK) {
-	              myprintf("f_open error (%i)\r\n", fres);
-	              continue;
-	          }
+		    /*fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_APPEND);
+		    if (fres != FR_OK) {
+		        myprintf("f_open error (%i)\r\n", fres);
+		        continue;
+		    }
 
-	          // Формируем строку
-	          snprintf((char*)readBuf, sizeof(readBuf), "File number %d is made!\r\n", i);
+		    snprintf((char*)writeBuf, sizeof(writeBuf), "File number %d is made!\r\n", i);
+		    fres = f_write(&fil, writeBuf, strlen((char*)writeBuf), &bytesWrote);
+		    if (fres != FR_OK) {
+		        myprintf("f_write error (%i)\r\n", fres);
+		        f_close(&fil);
+		        continue;
+		    }
 
-	          // Записываем только актуальные данные (без лишних нулей)
-	          UINT bytesWrote;
-	          fres = f_write(&fil, readBuf, strlen((char*)readBuf), &bytesWrote);
-	          if (fres == FR_OK) {
-	              myprintf("Wrote %i bytes to 'write.txt'!\r\n", bytesWrote);
-	          } else {
-	              myprintf("f_write error (%i)\r\n", fres);
-	          }
-
-	          // Сброс буферов и закрытие
-	          f_sync(&fil);
-	          f_close(&fil);
-	          HAL_Delay(10);  // Пауза между итерациями
-	          if(i == 14)
+		    myprintf("Wrote %i bytes to 'write.txt'!\r\n", bytesWrote);
+		    f_close(&fil);
+		    HAL_Delay(10);
+*/
+	          if(i == 17)
 	        	  f_mount(NULL, "", 0);
+
 	      }
 
 

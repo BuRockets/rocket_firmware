@@ -1,7 +1,11 @@
 #include "ff.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h> //for va_list var arg functions
+#include "sd.h"
+#include "main.h"
 
-
-void SD_init(FATFS FatFs, FIL fil, FRESULT fres, BYTE* readBuf){
+void SD_init(){
 	//Open the file system
     fres = f_mount(&FatFs, "", 1); //1=mount now
   	while(fres != FR_OK){
@@ -11,7 +15,7 @@ void SD_init(FATFS FatFs, FIL fil, FRESULT fres, BYTE* readBuf){
     }
 
     //Now let's try and write a file "write.txt"
-    fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_CREATE_ALWAYS);
+    fres = f_open(&fil, "write.txt", FA_WRITE | FA_CREATE_ALWAYS);
     if(fres == FR_OK) {
   	myprintf("I was able to open 'write.txt' for writing\r\n");
     } else {
@@ -19,8 +23,8 @@ void SD_init(FATFS FatFs, FIL fil, FRESULT fres, BYTE* readBuf){
     }
 
     //Copy in a string
-    snprintf((char*)readBuf, sizeof(readBuf), "Start work with SD card!\r\n");
-    UINT bytesWrote;
+    snprintf((char*)readBuf, strlen((char*)readBuf), "Start work with SD card!\r\n");
+
     fres = f_write(&fil, readBuf, strlen((char*)readBuf), &bytesWrote);
     if(fres != FR_OK) {
     	myprintf("f_write error (%i)\r\n");
@@ -35,7 +39,7 @@ void SD_init(FATFS FatFs, FIL fil, FRESULT fres, BYTE* readBuf){
 //FRESULT fres; //Result after operations
 //BYTE readBuf[30];
 
-void SD_write(FIL fil, FRESULT fres, char* writeBuf){
+void SD_write(){
 	// Открываем файл для дописывания
 	fres = f_open(&fil, "write.txt", FA_WRITE | FA_OPEN_APPEND);
 	if (fres != FR_OK) {
@@ -46,13 +50,12 @@ void SD_write(FIL fil, FRESULT fres, char* writeBuf){
 	//snprintf((char*)writeBuf, sizeof(writeBuf), "File number %d is made!\r\n", i);
 
 	// Записываем только актуальные данные (без лишних нулей)
-	UINT bytesWrote;
-	fres = f_write(&fil, writeBuf, strlen(writeBuf), &bytesWrote);
+
+	fres = f_write(&fil, writeBuf, strlen((char *)writeBuf), &bytesWrote);
 	if (fres != FR_OK) {
 	  myprintf("f_write error (%i)\r\n", fres);
 	}
 
 	// Сброс буферов и закрытие
-	f_sync(&fil);
 	f_close(&fil);
 }

@@ -6,19 +6,24 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+
 
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
-
+extern FATFS FatFs; 	//Fatfs handle
+extern FIL fil; 		//File handle
+extern FRESULT fres; //Result after operations
+extern BYTE readBuf[30];
+extern BYTE writeBuf[30];
+extern UINT bytesWrote;
 /* USER CODE END Private defines */
 
-void SD_init(FATFS FatFs, FIL fil, FRESULT fres, BYTE* readBuf);
+void SD_init();
 
-void SD_write(FIL fil, FRESULT fres, char* writeBuf);
+void SD_write();
 
 /* USER CODE BEGIN Prototypes */
 
