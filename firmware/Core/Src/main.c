@@ -19,14 +19,18 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "fatfs.h"
 #include "i2c.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
+#include <stdarg.h> //for va_list var arg functions
+#include "sd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -83,6 +87,13 @@ uint32_t time = 0;
 bool PID_WORK = 0;
 
 static float set_data[dimension_in] = {0,};
+
+FATFS FatFs; 	//Fatfs handle
+FIL fil; 		//File handle
+FRESULT fres; //Result after operations
+BYTE readBuf[30];
+BYTE writeBuf[30];
+UINT bytesWrote;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,6 +113,18 @@ void start_blink_led(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint16_t time){
 
 float tick_to_sec(uint32_t tick){
 	return tick/(float)1000;
+}
+
+void myprintf(const char *fmt, ...) {
+  static char buffer[256];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  int len = strlen(buffer);
+  HAL_UART_Transmit(&huart1, (uint8_t*)buffer, len, -1);
+
 }
 /* USER CODE END 0 */
 
@@ -144,6 +167,8 @@ int main(void)
   MX_TIM1_Init();
   MX_ADC1_Init();
   MX_I2C2_Init();
+  MX_SPI1_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
   HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)&rx_buffer, 100);
   //HAL_ADCEx_Calibration_Start(&hadc1);
@@ -191,6 +216,7 @@ int main(void)
   }
 
   radio_init(&radio);
+  SD_init();
 
   HAL_TIM_Base_Start_IT(&htim3);
 

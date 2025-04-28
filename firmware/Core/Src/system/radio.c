@@ -1,5 +1,5 @@
 #include "system/radio.h"
-
+#include "sd.h"
 
 void radio_init(struct Radio* radio){
 	radio->TRANSMIT_IS_OK = false;

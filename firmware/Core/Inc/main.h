@@ -43,8 +43,8 @@ extern "C" {
 #include "callback.h"
 #include "flash.h"
 #include <math.h>
-#include "string.h"
 #include <stdio.h>
+#include "spi.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -84,16 +84,20 @@ extern struct PID pid;
 extern char rx_buffer[100];
 
 extern bool PID_WORK;
+
+void myprintf(const char *fmt, ...);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SD_CS_Pin GPIO_PIN_13
+#define SD_CS_GPIO_Port GPIOB
 #define btn_Pin GPIO_PIN_14
 #define btn_GPIO_Port GPIOB
 #define led_Pin GPIO_PIN_12
 #define led_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
-
+#define SD_SPI_HANDLE hspi1
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
