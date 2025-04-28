@@ -27,7 +27,7 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 	if(radio->TRANSMIT_IS_OK == true){
 		HAL_UART_Transmit(&huart1, (uint8_t*)buf, strlen(buf), 100);
 	}*/
-	char time_buf[50];
+	/*char time_buf[50];
 	char altitude_buf[50];
 	char pitch_buf[50];
 	char roll_buf[50];
@@ -36,10 +36,49 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 	char d_roll_buf[50];
 	char d_yaw_buf[50];
 	char temperature_buf[50];
-	char battery_voltage_buf[50];
+	char battery_voltage_buf[50];*/
 
 
 	if(radio->TRANSMIT_IS_OK == true){
+
+		char tx_buffer[256];
+		int offset = snprintf(tx_buffer, sizeof(tx_buffer), "time:%f ", rocket->time);
+
+		if (radio->ALTITUDE_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "altitude:%f ", rocket->altitude->altitude_f);
+
+		if (radio->PITCH_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "pitch:%f ", rocket->angle->pitch);
+
+		if (radio->ROLL_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "roll:%f ", rocket->angle->roll);
+
+		if (radio->YAW_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "yaw:%f ", rocket->angle->yaw);
+
+		if (radio->D_PITCH_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "d_pitch:%f ", rocket->angle_velocity->d_pitch);
+
+		if (radio->D_ROLL_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "d_roll:%f ", rocket->angle_velocity->d_roll);
+
+		if (radio->D_YAW_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "d_yaw:%f ", rocket->angle_velocity->d_yaw);
+
+		if (radio->TEMPERATURE_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "temperature:%f ", rocket->atmosphere->temperature);
+
+		if (radio->BATTERY_VOLTAGE_IS_OK)
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "battery_voltage:%f ", rocket->battery_voltage);
+
+		offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, ";\n");
+		HAL_UART_Transmit(&huart1, (uint8_t*)tx_buffer, offset, 100);
+		memcpy(writeBuf, tx_buffer, sizeof(tx_buffer));
+		SD_write();
+	}
+
+
+	/*if(radio->TRANSMIT_IS_OK == true){
 		snprintf(time_buf, sizeof(time_buf), "time:%f ", rocket->time);
 		HAL_UART_Transmit(&huart1, (uint8_t*)time_buf, strlen(time_buf), 100);
 
@@ -82,5 +121,5 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 			HAL_UART_Transmit(&huart1, (uint8_t*)battery_voltage_buf, strlen(battery_voltage_buf), 100);
 		}
 		HAL_UART_Transmit(&huart1, (uint8_t*)";\n", strlen(";\n"), 100);
-	}
+	}*/
 }
