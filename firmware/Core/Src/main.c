@@ -69,6 +69,8 @@ struct Angle_velocity angle_velocity;
 
 struct PID pid;
 
+struct Test test;
+
 float Kp = 1;
 
 float Ki = 1;
@@ -94,6 +96,7 @@ FRESULT fres; //Result after operations
 BYTE readBuf[30];
 BYTE writeBuf[30];
 UINT bytesWrote;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -126,6 +129,20 @@ void myprintf(const char *fmt, ...) {
   HAL_UART_Transmit(&huart1, (uint8_t*)buffer, len, -1);
 
 }
+
+void activate_rescue_system(struct Test* test, struct Radio* radio){
+	turn_srv(90);
+	if(test->start_turn_flag == 0){
+	  test->start_turn_time = HAL_GetTick();
+	}
+	test->start_turn_flag = 1;
+	if(HAL_GetTick() - test->start_turn_time > 500){
+	  radio->TEST_RESCUE_IS_OK = 0;
+	  test->start_turn_flag = 0;
+	  turn_srv(0);
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -169,6 +186,7 @@ int main(void)
   MX_I2C2_Init();
   MX_SPI1_Init();
   MX_FATFS_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   HAL_UARTEx_ReceiveToIdle_IT(&huart1, (uint8_t *)&rx_buffer, 100);
   //HAL_ADCEx_Calibration_Start(&hadc1);
@@ -177,11 +195,15 @@ int main(void)
 
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
 
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
 
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
   HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_SET);
 
@@ -216,9 +238,8 @@ int main(void)
   }
 
   radio_init(&radio);
-  SD_init();
 
-  HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_Base_Start_IT(&htim4);
 
   HAL_Delay(500);
   HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_RESET);
@@ -244,8 +265,11 @@ int main(void)
 
 	  filtered_altitude_measurement(&rocket, &gmedian_alt);
 
-	  if((flag_irq && (HAL_GetTick() - time_irq) > btn_time)){
-		  turn_servo(90);
+	  if((flag_irq && (HAL_GetTick() - time_irq) > btn_time) || radio.TEST_RESCUE_IS_OK){
+		  if(!(test.start_turn_flag)){
+			  init_control_system();
+		  }
+		  activate_rescue_system(&test, &radio);
 	  }
 
 	  fly_control(&rocket);
@@ -258,7 +282,7 @@ int main(void)
 
 	  if(PID_WORK == true){
 		  get_PID_out(&pid, &angle, &angle_velocity, set_data);
-		  if(radio.CONTROL_IS_OK == true){
+		  if(radio.CNTRL_IS_OK == true){
 			  set_pwm(&pid);			//Раскоментировать при стабильном уровне питания 5Вольт
 		  }
 		  PID_WORK = false;

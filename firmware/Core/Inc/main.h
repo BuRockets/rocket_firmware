@@ -86,6 +86,7 @@ extern char rx_buffer[100];
 extern bool PID_WORK;
 
 void myprintf(const char *fmt, ...);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

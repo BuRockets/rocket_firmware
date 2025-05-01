@@ -85,7 +85,11 @@ void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio){
 			} else if (strcmp(var_name, "BATTERY_VOLTAGE_IS_OK") == 0) {
 				radio->BATTERY_VOLTAGE_IS_OK = value;
 			} else if (strcmp(var_name, "CONTROL_IS_OK") == 0) {
-				radio->CONTROL_IS_OK = value;
+				radio->CNTRL_IS_OK = value;
+			} else if (strcmp(var_name, "POINTS_IS_OK") == 0) {
+				radio->POINTS_IS_OK = value;
+			} else if (strcmp(var_name, "TEST_RESCUE_IS_OK") == 0) {
+				radio->TEST_RESCUE_IS_OK = value;
 			}
 
 		} else {
@@ -118,7 +122,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	if(htim->Instance == TIM3){
+	if(htim->Instance == TIM4){
 		PID_WORK = true;
 
 		//get_PID_out(&pid, &angle, &angle_velocity, set_data);

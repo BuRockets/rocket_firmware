@@ -1,13 +1,14 @@
 #include "system/altitude.h"
 
-uint16_t size;
-uint8_t Data[256];
+//uint16_t size;
+//uint8_t Data[256];
 
 
 BMP280_HandleTypedef bmp280;
 
 void altitude_init(struct Rocket* rocket){
-
+	uint8_t Data[256];
+	uint16_t size;
 	if (rocket->altitude == NULL) {
 		// Обработка ошибки: указатель не инициализирован
 		return;
@@ -28,9 +29,12 @@ void altitude_init(struct Rocket* rocket){
 		HAL_UART_Transmit(&huart1, Data, size, 1000);
 		HAL_Delay(2000);
 	}
+
 	bool bme280p = bmp280.id == BME280_CHIP_ID;
+
 	size = sprintf((char *)Data, "BMP280: found %s\n", bme280p ? "BME280" : "BMP280");
 	HAL_UART_Transmit(&huart1, Data, size, 1000);
+
 	for(int i = 0; i < 100; i++){
 		bmp280_read_float(&bmp280, &(rocket->atmosphere->start_temperature), &(rocket->atmosphere->start_pressure), &(rocket->atmosphere->start_humidity));
 	}

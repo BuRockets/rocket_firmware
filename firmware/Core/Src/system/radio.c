@@ -13,7 +13,9 @@ void radio_init(struct Radio* radio){
 	radio->TEMPERATURE_IS_OK = false;
 	radio->BATTERY_VOLTAGE_IS_OK = false;
 	radio->frequency_data_transmission = 1;
-	radio->CONTROL_IS_OK = 0;
+	radio->CNTRL_IS_OK = 0;
+	radio->POINTS_IS_OK = 0;
+	radio->TEST_RESCUE_IS_OK = 0;
 }
 
 void set_data_transmit_frequency(TIM_HandleTypeDef *htim, struct Radio* radio){
@@ -72,10 +74,15 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 		if (radio->BATTERY_VOLTAGE_IS_OK)
 			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "battery_voltage:%f ", rocket->battery_voltage);
 
+		if(radio->POINTS_IS_OK){
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "start_point:%f ", (float)rocket->start_point);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "apogee_point:%f ", (float)rocket->apogee_point);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "activate_point:%f ", (float)rocket->activate_point);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "landing_point:%f ", (float)rocket->landing_point);
+		}
+
 		offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, ";\n");
 		HAL_UART_Transmit(&huart1, (uint8_t*)tx_buffer, offset, 100);
-		memcpy(writeBuf, tx_buffer, sizeof(tx_buffer));
-		SD_write();
 	}
 
 

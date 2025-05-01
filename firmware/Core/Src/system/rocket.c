@@ -89,3 +89,23 @@ void delta_init(struct Rocket* rocket){
 	rocket->delta_activate = 1;
 	rocket->starting_height = 2;
 }
+
+void init_control_system(){
+	/*turn_srv(&(TIM2->CCR1), 30);
+	HAL_Delay(150);
+	turn_srv(&(TIM2->CCR2), 30);
+	HAL_Delay(150);
+	turn_srv(&(TIM2->CCR3), 30);
+	HAL_Delay(150);
+	turn_srv(&(TIM2->CCR4), 30);
+	HAL_Delay(150);
+	turn_srv(&(TIM2->CCR4), -30);
+	HAL_Delay(150);
+	turn_srv(&(TIM2->CCR3), -30);
+	HAL_Delay(150);
+	turn_srv(&(TIM2->CCR2), -30);
+	HAL_Delay(150);
+	turn_srv(&(TIM2->CCR1), -30);
+	HAL_Delay(1000);*/
+}
+

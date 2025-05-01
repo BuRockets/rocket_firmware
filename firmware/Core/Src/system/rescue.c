@@ -1,4 +1,5 @@
 #include "system/rescue.h"
+#include "stm32f405xx.h"
 
 uint16_t degrees_to_pulse(int16_t degrees){
   return 11.1*degrees + 1500;
@@ -19,7 +20,12 @@ void turn_servo(int16_t degrees){
 	flag_irq = 0;
 }
 
+void turn_srv(int16_t degrees){
+	TIM1->CCR1 = degrees_to_pulse(degrees);
+}
+
 void rescue_system_init(TIM_TypeDef* TIM){
 	TIM->CCR2 = degrees_to_pulse(0);
 }
+
 

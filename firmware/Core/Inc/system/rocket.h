@@ -119,6 +119,8 @@ void fly_control(struct Rocket* rocket);
 
 void delta_init(struct Rocket* rocket);
 
+void init_control_system();
+
 
 #ifdef __cplusplus
 }
