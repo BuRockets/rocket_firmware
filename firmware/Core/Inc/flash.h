@@ -4,11 +4,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#include "system/radio.h"
 #include "string.h"
 #include <stdio.h>
 #include "../stm32f4xx_hal.h"
 #include "main.h"
+
+struct Radio;
+
+
 
 #define flashADDR   0x08060000
 #define FLASH_USER_START_ADDR   0x08060000   // Начальный адрес последней страницы Flash
@@ -19,9 +23,9 @@ extern "C" {
 //0x0801F800
 int CheckFlashData();
 
-HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket);
+HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket, struct Radio* radio);
 
-void ReadFromFlash(struct Rocket *rocket);
+void ReadFromFlash(struct Rocket *rocket, struct Radio* radio);
 
 #ifdef __cplusplus
 }

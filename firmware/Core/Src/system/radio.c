@@ -14,8 +14,15 @@ void radio_init(struct Radio* radio){
 	radio->BATTERY_VOLTAGE_IS_OK = false;
 	radio->frequency_data_transmission = 1;
 	radio->CNTRL_IS_OK = 0;
+	radio->PID_K_IS_OK = 0;
 	radio->POINTS_IS_OK = 0;
 	radio->TEST_RESCUE_IS_OK = 0;
+}
+
+void radio_pid_init(struct Radio* radio){
+	radio->Kp = 1;
+	radio->Ki = 1;
+	radio->Kd = 0;
 }
 
 void set_data_transmit_frequency(TIM_HandleTypeDef *htim, struct Radio* radio){
@@ -73,6 +80,12 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 
 		if (radio->BATTERY_VOLTAGE_IS_OK)
 			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "battery_voltage:%f ", rocket->battery_voltage);
+
+		if (radio->PID_K_IS_OK){
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "Kp:%f ", radio->Kp);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "Ki:%f ", radio->Ki);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "Kd:%f ", radio->Kd);
+		}
 
 		if(radio->POINTS_IS_OK){
 			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "start_point:%f ", (float)rocket->start_point);

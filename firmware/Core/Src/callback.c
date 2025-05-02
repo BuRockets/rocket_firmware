@@ -44,22 +44,58 @@ void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio){
 			// Присваиваем значение переменной
 			if (strcmp(var_name, "delta_apogee") == 0) {
 				rocket->delta_apogee = value;
-				WriteToFlash(rocket);
-				char buf[30];
-				snprintf(buf,sizeof(buf),"delta_apogee = %u\n", rocket->delta_apogee);
-				HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				if(WriteToFlash(rocket, radio)){
+					char buf[30];
+					snprintf(buf,sizeof(buf),"delta_apogee = %u\n", rocket->delta_apogee);
+					HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				} else {
+					HAL_UART_Transmit(&huart1, (uint8_t*)"Error write in flash",strlen("Error write in flash") , 200);
+				}
 			} else if (strcmp(var_name, "delta_activate") == 0) {
 				rocket->delta_activate = value;
-				WriteToFlash(rocket);
-				char buf[30];
-				snprintf(buf,sizeof(buf),"delta_activate = %u\n", rocket->delta_activate);
-				HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				if(WriteToFlash(rocket, radio)){
+					char buf[30];
+					snprintf(buf,sizeof(buf),"delta_activate = %u\n", rocket->delta_activate);
+					HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				} else {
+					HAL_UART_Transmit(&huart1, (uint8_t*)"Error write in flash",strlen("Error write in flash") , 200);
+				}
 			} else if (strcmp(var_name, "starting_height") == 0) {
 				rocket->starting_height = value;
-				WriteToFlash(rocket);
-				char buf[30];
-				snprintf(buf,sizeof(buf),"starting_height = %u\n", rocket->starting_height);
-				HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				if(WriteToFlash(rocket, radio)){
+					char buf[30];
+					snprintf(buf,sizeof(buf),"starting_height = %u\n", rocket->starting_height);
+					HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				} else {
+					HAL_UART_Transmit(&huart1, (uint8_t*)"Error write in flash",strlen("Error write in flash") , 200);
+				}
+			} else if (strcmp(var_name, "Kp") == 0) {
+				radio->Kp = value;
+				if(WriteToFlash(rocket, radio) == HAL_OK){
+					char buf[30];
+					snprintf(buf,sizeof(buf),"Kp = %f\n", radio->Kp);
+					HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				} else {
+					HAL_UART_Transmit(&huart1, (uint8_t*)"Error write in flash",strlen("Error write in flash") , 200);
+				}
+			} else if (strcmp(var_name, "Ki") == 0) {
+				radio->Ki = value;
+				if(WriteToFlash(rocket, radio) == HAL_OK){
+					char buf[30];
+					snprintf(buf,sizeof(buf),"Ki = %f\n", radio->Ki);
+					HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				} else {
+					HAL_UART_Transmit(&huart1, (uint8_t*)"Error write in flash",strlen("Error write in flash") , 200);
+				}
+			} else if (strcmp(var_name, "Kd") == 0) {
+				radio->Kd = value;
+				if(WriteToFlash(rocket, radio) == HAL_OK){
+					char buf[30];
+					snprintf(buf,sizeof(buf),"Kd = %f\n", radio->Kd);
+					HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+				} else {
+					HAL_UART_Transmit(&huart1, (uint8_t*)"Error write in flash",strlen("Error write in flash") , 200);
+				}
 			} else if (strcmp(var_name, "TRANSMIT_IS_OK") == 0) {
 				radio->TRANSMIT_IS_OK = value;
 			}
@@ -84,6 +120,8 @@ void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio){
 				radio->TEMPERATURE_IS_OK = value;
 			} else if (strcmp(var_name, "BATTERY_VOLTAGE_IS_OK") == 0) {
 				radio->BATTERY_VOLTAGE_IS_OK = value;
+			} else if (strcmp(var_name, "PID_K_IS_OK") == 0) {
+				radio->PID_K_IS_OK = value;
 			} else if (strcmp(var_name, "CONTROL_IS_OK") == 0) {
 				radio->CNTRL_IS_OK = value;
 			} else if (strcmp(var_name, "POINTS_IS_OK") == 0) {
@@ -107,6 +145,21 @@ void receive_data(char* rx_buffer, struct Rocket* rocket, struct Radio* radio){
 			else if (strcmp(command, "get_starting_height") == 0){
 				char buf[30];
 				snprintf(buf,sizeof(buf),"starting_height = %u\n", rocket->starting_height);
+				HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+			}
+			else if (strcmp(command, "get_Kp") == 0){
+				char buf[30];
+				snprintf(buf,sizeof(buf),"Kp = %f\n", radio->Kp);
+				HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+			}
+			else if (strcmp(command, "get_Ki") == 0){
+				char buf[30];
+				snprintf(buf,sizeof(buf),"Ki = %f\n", radio->Ki);
+				HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
+			}
+			else if (strcmp(command, "get_Kd") == 0){
+				char buf[30];
+				snprintf(buf,sizeof(buf),"Kd = %f\n", radio->Kd);
 				HAL_UART_Transmit(&huart1, (uint8_t*)buf,strlen(buf) , 200);
 			}
 		}

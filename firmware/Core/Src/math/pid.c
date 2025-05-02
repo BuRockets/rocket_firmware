@@ -20,7 +20,7 @@ void PID_init(struct PID* pid){
  * Также считается, что ракета симметрична
  * и коэффиценты по одной горизонтальной оси полность совпадают с коэффицентами по другой горизонтальной оси
  */
-void set_PID_coefficients(struct PID* pid,float Kp, float Ki, float Kd){
+void set_PID_coefficients(struct PID* pid, struct Radio* radio){
 
 	for(int i = 0; i < dimension_out; i++){
 			for(int j = 0; j < dimension_in; j++){
@@ -30,13 +30,13 @@ void set_PID_coefficients(struct PID* pid,float Kp, float Ki, float Kd){
 					pid->kd[i][j] = 0;
 				} else {
 					if(i == 0 || i == 1){
-						pid->kp[i][j] = Kp;
-						pid->ki[i][j] = Ki;
-						pid->kd[i][j] = Kd;
+						pid->kp[i][j] = radio->Kp;
+						pid->ki[i][j] = radio->Ki;
+						pid->kd[i][j] = radio->Kd;
 					} else {
-						pid->kp[i][j] = -Kp;
-						pid->ki[i][j] = -Ki;
-						pid->kd[i][j] = -Kd;
+						pid->kp[i][j] = -(radio->Kp);
+						pid->ki[i][j] = -(radio->Ki);
+						pid->kd[i][j] = -(radio->Kd);
 					}
 				}
 			}
@@ -98,8 +98,8 @@ void get_PID_out(struct PID* pid, struct Angle* angle, struct Angle_velocity* an
 }
 
 void set_pwm(struct PID* pid){
-	TIM2->CCR1 = degrees_to_pulse(pid->out[1]);
-	TIM2->CCR2 = degrees_to_pulse(-pid->out[0]);
+	TIM2->CCR2 = degrees_to_pulse(pid->out[1]);
+	TIM2->CCR1 = degrees_to_pulse(pid->out[0]);
 	TIM3->CCR4 = degrees_to_pulse(pid->out[3]);
-	TIM2->CCR4 = degrees_to_pulse(-pid->out[2]);
+	TIM2->CCR4 = degrees_to_pulse(pid->out[2]);
 }

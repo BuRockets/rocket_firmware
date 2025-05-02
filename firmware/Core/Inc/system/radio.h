@@ -23,14 +23,21 @@ struct Radio{
 	bool TEMPERATURE_IS_OK;
 	bool BATTERY_VOLTAGE_IS_OK;
 	bool CNTRL_IS_OK;
+	bool PID_K_IS_OK;
 	bool POINTS_IS_OK;
 	bool TEST_RESCUE_IS_OK;
 
 
 	uint16_t frequency_data_transmission;
+
+	float Kp;
+	float Ki;
+	float Kd;
 };
 
 void radio_init(struct Radio* radio);
+
+void radio_pid_init(struct Radio* radio);
 
 void transmit_data(struct Rocket* rocket, struct Radio* radio);
 

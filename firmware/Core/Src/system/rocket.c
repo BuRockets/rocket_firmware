@@ -37,6 +37,7 @@ void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* alt
     rocket->apogee_point = 0;
     rocket->activate_point = 0;
     rocket->landing_point = 0;
+    rocket->rescue_worked = 0;
 
     //rocket->delta_apogee = 1;
     //rocket->delta_activate = 1;

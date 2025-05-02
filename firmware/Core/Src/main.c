@@ -71,11 +71,11 @@ struct PID pid;
 
 struct Test test;
 
-float Kp = 1;
+//float Kp = 1;
 
-float Ki = 1;
+//float Ki = 1;
 
-float Kd = 0;
+//float Kd = 0;
 
 char rx_buffer[100] = {0,};
 
@@ -211,11 +211,14 @@ int main(void)
 
   rocket_init(&rocket, "1A", &altitude, &atmosphere, &accelerate, &angle, &angle_velocity);
 
+  radio_init(&radio);
+
   if (CheckFlashData()) {
-	  ReadFromFlash(&rocket); // Чтение данных из Flash, если они корректны
+	  ReadFromFlash(&rocket, &radio); // Чтение данных из Flash, если они корректны
   }
   else {
 	  delta_init(&rocket);
+	  radio_pid_init(&radio);
   }
 
   angle_init(&angle);
@@ -224,7 +227,7 @@ int main(void)
 
   PID_init(&pid);
 
-  set_PID_coefficients(&pid, Kp, Ki, Kd);
+  set_PID_coefficients(&pid, &radio);
 
   altitude_init(&rocket);
 
@@ -236,8 +239,6 @@ int main(void)
 	  initGMedian(&(gmedian_a[i]));
 	  initGMedian(&(gmedian_g[i]));
   }
-
-  radio_init(&radio);
 
   HAL_TIM_Base_Start_IT(&htim4);
 
@@ -274,8 +275,9 @@ int main(void)
 
 	  fly_control(&rocket);
 
-	  if(rocket.activate_point){
+	  if(rocket.activate_point && (!rocket.rescue_worked)){
 		 turn_servo(90);
+		 rocket.rescue_worked = 1;
 	  }
 	  rocket.time = tick_to_sec(HAL_GetTick());
 	  rocket.battery_voltage = get_mcu_voltage();

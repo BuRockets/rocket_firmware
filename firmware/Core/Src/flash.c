@@ -21,7 +21,7 @@ int CheckFlashData() {
 }
 
 // Функция записи структуры в Flash
-HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket) {
+HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket, struct Radio* radio) {
 
     HAL_FLASH_Unlock(); // Разблокировка Flash
 
@@ -57,7 +57,6 @@ HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket) {
         HAL_FLASH_Lock();
         return HAL_ERROR; // Ошибка записи
     }
-
     address += sizeof(uint32_t);
 
     // Запись структуры в Flash*((uint32_t*)&value)
@@ -65,21 +64,41 @@ HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket) {
         HAL_FLASH_Lock();
         return HAL_ERROR; // Ошибка записи
     }
-
     address += sizeof(uint32_t);
 
     if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, rocket->delta_activate) != HAL_OK) {
         HAL_FLASH_Lock();
         return HAL_ERROR; // Ошибка записи
     }
-
     address += sizeof(uint32_t);
 
     if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, rocket->starting_height) != HAL_OK) {
             HAL_FLASH_Lock();
             return HAL_ERROR; // Ошибка записи
     }
+	uint32_t float_as_uint_Kp;
+    memcpy(&float_as_uint_Kp, &(radio->Kp), 4);  // Копируем побайтово
+    if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, float_as_uint_Kp) != HAL_OK) {
+			HAL_FLASH_Lock();
+			return HAL_ERROR; // Ошибка записи
+	}
+    address += sizeof(float);
 
+	uint32_t float_as_uint_Ki;
+    memcpy(&float_as_uint_Ki, &(radio->Ki), 4);  // Копируем побайтово
+    if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, float_as_uint_Ki) != HAL_OK) {
+			HAL_FLASH_Lock();
+			return HAL_ERROR; // Ошибка записи
+	}
+    address += sizeof(float);
+
+	uint32_t float_as_uint_Kd;
+    memcpy(&float_as_uint_Kd, &(radio->Kd), 4);  // Копируем побайтово
+    if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, float_as_uint_Kd) != HAL_OK) {
+			HAL_FLASH_Lock();
+			return HAL_ERROR; // Ошибка записи
+	}
+    address += sizeof(float);
 
     HAL_FLASH_Lock(); // Блокировка Flash
     __enable_irq();                                        // включаем прерывания обратно
@@ -87,7 +106,7 @@ HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket) {
 }
 
 // Функция чтения структуры из Flash
-void ReadFromFlash(struct Rocket *rocket) {
+void ReadFromFlash(struct Rocket *rocket, struct Radio* radio) {
     uint32_t address = FLASH_USER_START_ADDR + 4; // Пропускаем контрольную сумму
 
     if (address % 4 != 0) {
@@ -103,6 +122,21 @@ void ReadFromFlash(struct Rocket *rocket) {
 
     rocket->starting_height = *(__IO uint32_t*)address; // Чтение второго поля
     address += 4;
+
+    uint32_t uint_to_float_Kp = *(__IO uint32_t*)address; // Чтение второго поля;
+    memcpy(&(radio->Kp),&uint_to_float_Kp,4);
+    //radio->Kp	 = *(__IO uint32_t*)address; // Чтение второго поля
+	address += 4;
+
+	uint32_t uint_to_float_Ki = *(__IO uint32_t*)address; // Чтение второго поля;
+	memcpy(&(radio->Ki),&uint_to_float_Ki,4);
+	//radio->Ki = *(__IO uint32_t*)address; // Чтение второго поля
+	address += 4;
+
+	uint32_t uint_to_float_Kd = *(__IO uint32_t*)address; // Чтение второго поля;
+	memcpy(&(radio->Kd),&uint_to_float_Kd,4);
+	//radio->Kd = *(__IO uint32_t*)address; // Чтение второго поля
+	//address += 4;
 
     //return HAL_OK; // Успешно
 }

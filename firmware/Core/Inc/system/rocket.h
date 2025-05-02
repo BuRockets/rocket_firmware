@@ -85,6 +85,7 @@ struct Rocket{
 	bool apogee_point;							//становится true если (max_alt - altitude) > delta_apogee
 	bool activate_point;						//уведомляет о необходимости открытия парашюта
 	bool landing_point;							//становится true при приземлении
+	bool rescue_worked;
 
 	uint8_t delta_apogee;						//сколько нужно отпуститься метров от максимального значения max_altitude чтобы был зафиксирован апогей
 	uint8_t delta_activate;					//какая должна быть разница между максимальной высотой и действительной высотой чтобы раскрылся парашют
