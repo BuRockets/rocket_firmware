@@ -11,15 +11,22 @@
 - ```TRANSMIT_IS_OK:1;``` -- разрешить присылать телеметрию <small>```bool```</small>
 - ```POINTS_IS_OK:1;``` -- отправлять в телеметрии все ```...POINTS``` <small>```bool```</small>
 - ```CONTROL_IS_OK:1;``` -- активировать систему управления <small>```bool```</small>
-- ```ALTITUDE_IS_OK:1;``` -- отправлять в телеметрии высоту полета полета <small>```bool```</small>
-- ```PITCH_IS_OK:1;``` -- отправлять в телеметрии PITCH полета <small>```bool```</small>
-- ```frequency_data_transmission:5;``` -- установить частоту посылки данных равную 5 Гц <small>```uint32_t```</small>
+- ```ALTITUDE_IS_OK:1;``` -- отправлять в телеметрии высоту полета полета (0 - не отправлять) <small>```bool```</small>
+- ```PITCH_IS_OK:1;``` -- отправлять в телеметрии PITCH полета (0 - не отправлять) <small>```bool```</small>
+- ```ROLL_IS_OK:1;``` -- отправлять в телеметрии ROLL полета (0 - не отправлять) <small>```bool```</small>
+- ```YAW_IS_OK:1;``` -- отправлять в телеметрии YAW полета (0 - не отправлять) <small>```bool```</small>
+- ```D_PITCH_IS_OK:1;``` -- отправлять в телеметрии D_PITCH полета (0 - не отправлять) <small>```bool```</small>
+- ```D_ROLL_IS_OK:1;``` -- отправлять в телеметрии D_ROLL полета (0 - не отправлять) <small>```bool```</small>
+- ```D_YAW_IS_OK:1;``` -- отправлять в телеметрии D_YAW полета (0 - не отправлять) <small>```bool```</small>
+- ```TEMPERATURE_IS_OK:1;``` -- отправлять в телеметрии температуру контроллера (0 - не отправлять) <small>```bool```</small>
+- ```BATTERY_VOLTAGE_IS_OK:1;``` -- отправлять в телеметрии напряжение контроллера (0 - не отправлять) <small>```bool```</small>
+- ```frequency_data_transmission:1;``` -- установить частоту посылки данных равную 1 Гц <small>```uint32_t```</small>
 
-#### поля установки полетного задания ####
+#### поля установки полетного задания <small>```сохраняются во flash память stm```</small> ####
 
 - ```delta_apogee:1;``` -- установить delta_apogee == 1 <small>```uint32_t```</small>
-- ```delta_activate:2;``` -- установить delta_activate == 2 <small>```uint32_t```</small>
-- ```starting_height:3;``` -- установить starting_height == 3 <small>```uint32_t```</small>
+- ```delta_activate:1;``` -- установить delta_activate == 1 <small>```uint32_t```</small>
+- ```starting_height:2;``` -- установить starting_height == 2 <small>```uint32_t```</small>
 - ```Kp:0.125;``` -- установить Kp == 0.125 <small>```float```</small>
 - ```Ki:0.125;``` -- установить Ki == 0.125 <small>```float```</small>
 - ```Kd:0.125;``` -- установить Kd == 0.125 <small>```float```</small>
@@ -41,4 +48,4 @@
     - 0 - без компенсацией вращения  
 ## Команда ##
 
-- ```reset_points:;``` -- сбросить в 0 значение всех ```..._points```
+- ```reset_points:;``` -- сбросить в 0 значение всех ```..._points``` (нет входных аргументов)
