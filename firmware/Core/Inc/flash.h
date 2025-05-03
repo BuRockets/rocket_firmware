@@ -12,6 +12,8 @@ extern "C" {
 
 struct Radio;
 
+struct PID_zeros;
+
 
 
 #define flashADDR   0x08060000
@@ -25,7 +27,7 @@ int CheckFlashData();
 
 HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket, struct Radio* radio);
 
-void ReadFromFlash(struct Rocket *rocket, struct Radio* radio);
+void ReadFromFlash(struct Rocket *rocket, struct Radio* radio, struct PID_zeros* pid_zeros);
 
 #ifdef __cplusplus
 }

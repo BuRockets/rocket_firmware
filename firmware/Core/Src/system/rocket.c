@@ -49,6 +49,8 @@ void rocket_init(struct Rocket *rocket, const char *teamId, struct Altitude* alt
 
     rocket->atmosphere = atmosphere;
 
+    rocket->PWM_out_mode = YAW_IS_NOT_WORK_MODE;
+
 }
 
 void atmosphere_init(struct Atmosphere_param* atmosphere){
@@ -108,5 +110,13 @@ void init_control_system(){
 	HAL_Delay(150);
 	turn_srv(&(TIM2->CCR1), -30);
 	HAL_Delay(1000);*/
+}
+
+void reset_points(struct Rocket* rocket){
+	rocket->start_point = 0;
+	rocket->apogee_point = 0;
+	rocket->activate_point = 0;
+	rocket->rescue_worked = 0;
+	rocket->landing_point = 0;
 }
 

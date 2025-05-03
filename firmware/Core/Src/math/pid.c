@@ -1,5 +1,5 @@
 #include "math/pid.h"
-
+#include "system/rocket.h"
 
 void PID_init(struct PID* pid){
 	for(int i = 0; i < dimension_in; i++){
@@ -97,9 +97,16 @@ void get_PID_out(struct PID* pid, struct Angle* angle, struct Angle_velocity* an
 	}
 }
 
-void set_pwm(struct PID* pid){
-	TIM2->CCR2 = degrees_to_pulse(pid->out[1]);
-	TIM2->CCR1 = degrees_to_pulse(pid->out[0]);
-	TIM3->CCR4 = degrees_to_pulse(pid->out[3]);
-	TIM2->CCR4 = degrees_to_pulse(pid->out[2]);
+void set_pwm(struct PID* pid, struct Radio* radio, struct Rocket* rocket){
+	if(rocket->PWM_out_mode == YAW_IS_WORK_MODE){
+		TIM2->CCR2 = degrees_to_pulse(pid->out[1] - radio->pid_zeros->out1);
+		TIM2->CCR1 = degrees_to_pulse(pid->out[0] - radio->pid_zeros->out2);
+		TIM3->CCR4 = degrees_to_pulse(-pid->out[3] - radio->pid_zeros->out3);
+		TIM2->CCR4 = degrees_to_pulse(-pid->out[2] - radio->pid_zeros->out4);
+	} else {
+		TIM2->CCR2 = degrees_to_pulse(pid->out[1] - radio->pid_zeros->out1);
+		TIM2->CCR1 = degrees_to_pulse(pid->out[0] - radio->pid_zeros->out2);
+		TIM3->CCR4 = degrees_to_pulse(-pid->out[1] - radio->pid_zeros->out3);
+		TIM2->CCR4 = degrees_to_pulse(-pid->out[0] - radio->pid_zeros->out4);
+	}
 }

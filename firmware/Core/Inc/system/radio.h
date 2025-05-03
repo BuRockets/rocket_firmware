@@ -10,6 +10,13 @@ extern "C" {
 #include <stdbool.h>
 #include <math.h>
 
+struct PID_zeros{
+	int32_t out1;
+	int32_t out2;
+	int32_t out3;
+	int32_t out4;
+};
+
 struct Radio{
 
 	bool TRANSMIT_IS_OK;
@@ -23,7 +30,6 @@ struct Radio{
 	bool TEMPERATURE_IS_OK;
 	bool BATTERY_VOLTAGE_IS_OK;
 	bool CNTRL_IS_OK;
-	bool PID_K_IS_OK;
 	bool POINTS_IS_OK;
 	bool TEST_RESCUE_IS_OK;
 
@@ -33,15 +39,19 @@ struct Radio{
 	float Kp;
 	float Ki;
 	float Kd;
+
+	struct PID_zeros* pid_zeros;
 };
 
-void radio_init(struct Radio* radio);
+void radio_init(struct Radio* radio,  struct PID_zeros* pid_zeros);
 
 void radio_pid_init(struct Radio* radio);
 
 void transmit_data(struct Rocket* rocket, struct Radio* radio);
 
 void set_data_transmit_frequency(TIM_HandleTypeDef *htim, struct Radio* radio);
+
+void PID_zeros_init(struct PID_zeros* pid_zeros);
 
 
 

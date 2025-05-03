@@ -76,6 +76,38 @@ HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket, struct Radio* radio) {
             HAL_FLASH_Lock();
             return HAL_ERROR; // Ошибка записи
     }
+    address += sizeof(uint32_t);
+
+    if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, radio->pid_zeros->out1) != HAL_OK) {
+            HAL_FLASH_Lock();
+            return HAL_ERROR; // Ошибка записи
+    }
+    address += sizeof(uint32_t);
+
+    if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, radio->pid_zeros->out2) != HAL_OK) {
+			HAL_FLASH_Lock();
+			return HAL_ERROR; // Ошибка записи
+	}
+	address += sizeof(uint32_t);
+
+	if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, radio->pid_zeros->out3) != HAL_OK) {
+			HAL_FLASH_Lock();
+			return HAL_ERROR; // Ошибка записи
+	}
+	address += sizeof(uint32_t);
+
+	if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, radio->pid_zeros->out4) != HAL_OK) {
+			HAL_FLASH_Lock();
+			return HAL_ERROR; // Ошибка записи
+	}
+	address += sizeof(uint32_t);
+
+	if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, rocket->PWM_out_mode) != HAL_OK) {
+			HAL_FLASH_Lock();
+			return HAL_ERROR; // Ошибка записи
+	}
+	address += sizeof(uint32_t);
+
 	uint32_t float_as_uint_Kp;
     memcpy(&float_as_uint_Kp, &(radio->Kp), 4);  // Копируем побайтово
     if (HAL_FLASH_Program(TYPEPROGRAM_WORD, address, float_as_uint_Kp) != HAL_OK) {
@@ -98,7 +130,7 @@ HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket, struct Radio* radio) {
 			HAL_FLASH_Lock();
 			return HAL_ERROR; // Ошибка записи
 	}
-    address += sizeof(float);
+    //address += sizeof(float);
 
     HAL_FLASH_Lock(); // Блокировка Flash
     __enable_irq();                                        // включаем прерывания обратно
@@ -106,7 +138,7 @@ HAL_StatusTypeDef WriteToFlash(struct Rocket *rocket, struct Radio* radio) {
 }
 
 // Функция чтения структуры из Flash
-void ReadFromFlash(struct Rocket *rocket, struct Radio* radio) {
+void ReadFromFlash(struct Rocket *rocket, struct Radio* radio, struct PID_zeros* pid_zeros) {
     uint32_t address = FLASH_USER_START_ADDR + 4; // Пропускаем контрольную сумму
 
     if (address % 4 != 0) {
@@ -122,6 +154,23 @@ void ReadFromFlash(struct Rocket *rocket, struct Radio* radio) {
 
     rocket->starting_height = *(__IO uint32_t*)address; // Чтение второго поля
     address += 4;
+
+    pid_zeros->out1= *(__IO uint32_t*)address; // Чтение второго поля
+	address += 4;
+
+    pid_zeros->out2= *(__IO uint32_t*)address; // Чтение второго поля
+	address += 4;
+
+    pid_zeros->out3= *(__IO uint32_t*)address; // Чтение второго поля
+	address += 4;
+
+    pid_zeros->out4= *(__IO uint32_t*)address; // Чтение второго поля
+	address += 4;
+
+	radio->pid_zeros = pid_zeros;
+
+	rocket->PWM_out_mode= *(__IO uint32_t*)address; // Чтение второго поля
+	address += 4;
 
     uint32_t uint_to_float_Kp = *(__IO uint32_t*)address; // Чтение второго поля;
     memcpy(&(radio->Kp),&uint_to_float_Kp,4);

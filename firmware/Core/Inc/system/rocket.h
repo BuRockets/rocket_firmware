@@ -13,6 +13,9 @@ extern "C" {
 #include <stdbool.h>
 #include "math/angle.h"
 
+#define YAW_IS_WORK_MODE		1
+#define YAW_IS_NOT_WORK_MODE	0
+
 struct Angle {
 	float pitch;
 	float roll;
@@ -87,6 +90,8 @@ struct Rocket{
 	bool landing_point;							//становится true при приземлении
 	bool rescue_worked;
 
+	uint32_t PWM_out_mode;
+
 	uint8_t delta_apogee;						//сколько нужно отпуститься метров от максимального значения max_altitude чтобы был зафиксирован апогей
 	uint8_t delta_activate;					//какая должна быть разница между максимальной высотой и действительной высотой чтобы раскрылся парашют
 	uint8_t starting_height;					//при atitude == starting height start_point становится true, фиксация взлета ракеты
@@ -121,6 +126,8 @@ void fly_control(struct Rocket* rocket);
 void delta_init(struct Rocket* rocket);
 
 void init_control_system();
+
+void reset_points(struct Rocket* rocket);
 
 
 #ifdef __cplusplus

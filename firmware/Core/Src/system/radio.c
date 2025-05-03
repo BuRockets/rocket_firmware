@@ -1,7 +1,7 @@
 #include "system/radio.h"
 #include "sd.h"
 
-void radio_init(struct Radio* radio){
+void radio_init(struct Radio* radio, struct PID_zeros* pid_zeros){
 	radio->TRANSMIT_IS_OK = false;
 	radio->ALTITUDE_IS_OK = false;
 	radio->PITCH_IS_OK = false;
@@ -14,11 +14,17 @@ void radio_init(struct Radio* radio){
 	radio->BATTERY_VOLTAGE_IS_OK = false;
 	radio->frequency_data_transmission = 1;
 	radio->CNTRL_IS_OK = 0;
-	radio->PID_K_IS_OK = 0;
 	radio->POINTS_IS_OK = 0;
 	radio->TEST_RESCUE_IS_OK = 0;
+	radio->pid_zeros = pid_zeros;
 }
 
+void PID_zeros_init(struct PID_zeros* pid_zeros){
+	pid_zeros->out1 = 0;
+	pid_zeros->out2 = 0;
+	pid_zeros->out3 = 0;
+	pid_zeros->out4 = 0;
+}
 void radio_pid_init(struct Radio* radio){
 	radio->Kp = 1;
 	radio->Ki = 1;
@@ -81,17 +87,11 @@ void transmit_data(struct Rocket* rocket, struct Radio* radio){
 		if (radio->BATTERY_VOLTAGE_IS_OK)
 			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "battery_voltage:%f ", rocket->battery_voltage);
 
-		if (radio->PID_K_IS_OK){
-			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "Kp:%f ", radio->Kp);
-			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "Ki:%f ", radio->Ki);
-			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "Kd:%f ", radio->Kd);
-		}
-
 		if(radio->POINTS_IS_OK){
-			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "start_point:%f ", (float)rocket->start_point);
-			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "apogee_point:%f ", (float)rocket->apogee_point);
-			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "activate_point:%f ", (float)rocket->activate_point);
-			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "landing_point:%f ", (float)rocket->landing_point);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "start_point:%d ", rocket->start_point);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "apogee_point:%d ", rocket->apogee_point);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "activate_point:%d ", rocket->activate_point);
+			offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, "landing_point:%d ", rocket->landing_point);
 		}
 
 		offset += snprintf(tx_buffer + offset, sizeof(tx_buffer) - offset, ";\n");

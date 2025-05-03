@@ -54,6 +54,7 @@
 struct Rocket rocket;
 struct Atmosphere_param atmosphere;
 struct Altitude altitude;
+struct PID_zeros pid_zeros;
 struct Accelerate accelerate;
 struct Gyro gyro;
 struct Radio radio;
@@ -211,15 +212,16 @@ int main(void)
 
   rocket_init(&rocket, "1A", &altitude, &atmosphere, &accelerate, &angle, &angle_velocity);
 
-  radio_init(&radio);
-
   if (CheckFlashData()) {
-	  ReadFromFlash(&rocket, &radio); // Чтение данных из Flash, если они корректны
+	  ReadFromFlash(&rocket, &radio, &pid_zeros); // Чтение данных из Flash, если они корректны
   }
   else {
 	  delta_init(&rocket);
 	  radio_pid_init(&radio);
+	  PID_zeros_init(&pid_zeros);
   }
+
+  radio_init(&radio, &pid_zeros);
 
   angle_init(&angle);
 
@@ -285,7 +287,7 @@ int main(void)
 	  if(PID_WORK == true){
 		  get_PID_out(&pid, &angle, &angle_velocity, set_data);
 		  if(radio.CNTRL_IS_OK == true){
-			  set_pwm(&pid);			//Раскоментировать при стабильном уровне питания 5Вольт
+			  set_pwm(&pid, &radio, &rocket);			//Раскоментировать при стабильном уровне питания 5Вольт
 		  }
 		  PID_WORK = false;
 	  }

@@ -27,6 +27,8 @@ struct Angle_velocity;
 
 struct Radio;
 
+struct Rocket;
+
 struct PID {
 	float kp[dimension_out][dimension_in];
 	float ki[dimension_out][dimension_in];
@@ -38,7 +40,6 @@ struct PID {
 	float w_error[dimension_in];
 	float w_prev_error[dimension_in];
 	int16_t out[dimension_out];
-
 };
 
 void PID_init(struct PID* pid);
@@ -47,7 +48,7 @@ void set_PID_coefficients(struct PID* pid, struct Radio* radio);
 
 void get_PID_out(struct PID* pid, struct Angle* angle, struct Angle_velocity* angle_velocity, float set_data[dimension_in]);
 
-void set_pwm(struct PID* pid);
+void set_pwm(struct PID* pid, struct Radio* radio, struct Rocket* rocket);
 
 #ifdef __cplusplus
 }
